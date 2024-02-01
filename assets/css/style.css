@@ -208,6 +208,12 @@ input.invalid {
   color: white !important;
 }
 
+
+.main-btn2.selected {
+  background-color: #cd2122; /* Selected background color */
+  color: white !important;
+}
+
 .logo-img {
   height: 70px;
   width: auto;
@@ -234,8 +240,8 @@ input.invalid {
   ;
 }
 .meeting-type{
-  background-color: #cd212133;
-  border: 1px solid #cd2122;
+  background-color: white;
+  border: 2px solid #cd2122;
   padding: 20px;
   border-radius: 4px;
   cursor: pointer;

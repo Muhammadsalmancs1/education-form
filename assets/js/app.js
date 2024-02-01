@@ -76,3 +76,8 @@ function fixStepIndicator(n) {
     //... and adds the "active" class on the current step:
     x[n].className += " active";
 }
+
+function selectButton(button) {
+    button.classList.toggle('selected');
+
+}
