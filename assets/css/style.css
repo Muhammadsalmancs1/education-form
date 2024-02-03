@@ -208,6 +208,12 @@ input.invalid {
   color: white !important;
 }
 
+
+.main-btn2.selected {
+  background-color: #cd2122; /* Selected background color */
+  color: white !important;
+}
+
 .logo-img {
   height: 70px;
   width: auto;
@@ -233,7 +239,22 @@ input.invalid {
   color: #cd2122;
   ;
 }
-
+.meeting-type{
+  background-color: white;
+  border: 2px solid #cd2122;
+  padding: 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .5s;
+}
+.meeting-type:hover{
+  transform: scale(1.05);
+}
+.meeting-type h3{
+  font-size: 22px;
+  color: #cd2122;
+  font-weight: 600;
+}
 @media only screen and (max-width:767px) {
   #regForm {
     background-color: transparent !important;
