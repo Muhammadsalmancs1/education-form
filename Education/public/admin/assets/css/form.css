@@ -1,0 +1,257 @@
+:root {
+    --primary: #cd2122;
+    --light-gray: #F8F8F8;
+    --text-gray: #8A8A8F;
+  }
+  
+  body {
+    background-color: #f1f1f1;
+  }
+  
+  .body-conatiner {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+  
+  #regForm {
+    background-color: #ffffff;
+    margin: 0px auto;
+    padding: 25px 25px;
+    min-height: 70vh;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  
+  
+  .tab{
+    box-shadow: none !important;
+  }
+  input.invalid {
+    background-color: #ffdddd;
+  }
+  
+  .tab {
+    display: none;
+    min-height: 300px;
+  }
+  
+  
+  #prevBtn {
+    background-color: #bbbbbb;
+  }
+  
+  .step {
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbbbbb;
+    border: none;
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0.5;
+  }
+  
+  .step.active {
+    opacity: 1;
+  }
+  
+  .step.finish {
+    background-color: #cd2122;
+  }
+  
+  /* ==============form */
+  .lube-input {
+    position: relative;
+  }
+  
+  .lube-input label {
+    color: var(--Denim-blue, #39455F);
+
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.28px;
+  }
+  
+  .lube-input input {
+    color: #041023;
+
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.28px;
+    border-radius: 6px;
+    background: #F8F8F8;
+    padding: 10px 20px 10px 20px;
+    border-color: transparent;
+  }
+  
+  .lube-input select {
+    color: #041023;
+
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.28px;
+    border-radius: 6px;
+    background-color: #F8F8F8;
+    padding: 10px 20px 10px 50px;
+    border-color: transparent;
+  }
+  
+  .lube-input input:hover,
+  .lube-input input:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #39455F;
+    background-color: #F8F8F8;
+  }
+  
+  .lube-input select:hover,
+  .lube-input select:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #39455F;
+    background-color: #F8F8F8;
+  }
+  
+  .lube-input img {
+    position: absolute;
+    top: 38px;
+    left: 10px;
+  }
+  
+  #togglePassword {
+    position: absolute;
+    right: 15px;
+    top: 45px;
+    cursor: pointer;
+  }
+  
+  #togglePassword2 {
+    position: absolute;
+    right: 15px;
+    top: 45px;
+    cursor: pointer;
+  }
+  
+  #togglePassword3 {
+    position: absolute;
+    right: 15px;
+    top: 45px;
+    cursor: pointer;
+  }
+  
+  .main-btn {
+    border-radius: 6px;
+    background: #cd2122;
+    display: flex;
+    height: 40px;
+    /* padding: 3px 138px; */
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    color: var(--White, #FFF) !important;
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+  
+    /* SB - Text */
+
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 140%;
+    /* 19.6px */
+    border: none;
+    text-decoration: none;
+    width: 170px !important;
+  }
+  
+  .main-btn:hover {
+    background-color: #e41616 !important;
+  }
+  
+  .main-btn2 {
+    border-radius: 6px;
+    background: var(--Denim-blue, #39455F);
+    display: flex;
+    width: auto;
+    height: 40px;
+    padding: 3px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    color: #cd2122 !important;
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    /* SB - Text */
+
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 140%;
+    /* 19.6px */
+    text-decoration: none;
+    width: 150px;
+    background-color: transparent;
+    border: 2px solid #cd2122;
+  }
+  
+  .main-btn2:hover {
+    background-color: #cd2122;
+    color: white !important;
+  }
+  
+  .logo-img {
+    height: 70px;
+    width: auto;
+  }
+  
+  .logo-image img {
+    height: 120px;
+  }
+  
+  .logo-image2 img {
+    height: 170px;
+  }
+  
+  .referral-fields {
+    display: none;
+  }
+  
+  
+  /* ================================new css */
+  .top-heading {
+    font-size: 26px;
+    font-weight: 600;
+    color: #cd2122;
+    ;
+  }
+  
+  @media only screen and (max-width:767px) {
+    #regForm {
+      background-color: transparent !important;
+      margin: 0px auto !important;
+      padding: 0px 0px !important;
+      min-height: 70vh;
+    }
+  
+    body {
+      background-color: transparent;
+    }
+  
+    .main-btn {
+      width: 130px !important;
+    }
+  
+    .main-btn2 {
+      margin: 5px;
+    }
+  }
