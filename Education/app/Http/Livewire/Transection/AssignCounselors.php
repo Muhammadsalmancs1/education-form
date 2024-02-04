@@ -43,7 +43,7 @@ class AssignCounselors extends Component
 
     public function updateassigncounselor($id){
         $result = registerformmodel::find($id);
-        $result->Counselor = $this->assignupdate;
+        $result->Counselor = $this->assignupdate[$id];
         $result->update();
         $this->dispatchBrowserEvent('swal', [
             'position' => 'center-center',
