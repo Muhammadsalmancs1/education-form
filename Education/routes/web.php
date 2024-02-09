@@ -6,6 +6,9 @@ use App\Http\Controllers\admincontroller;
 use App\Http\Controllers\registrationform;
 use App\Http\Controllers\usermanagement_controller;
 use App\Http\Controllers\counselorcontroller;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +53,11 @@ Route::get('user_page', [usermanagement_controller::class, 'index'])->name('user
 // counselor
 Route::get('counselor', [counselorcontroller::class, 'index'])->name('counselor');
 
+// permissions
+Route::get('permissions', [PermissionController::class, 'index'])->name('permissions');
+
+// user roles
+Route::get('roles', [RoleController::class, 'index'])->name('roles');
 
 
 

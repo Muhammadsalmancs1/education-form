@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Transection;
 use App\Models\registerformmodel;
 use Livewire\WithPagination;
 use Livewire\Component;
+use App\Models\usermanage\manageusermodel;
+
 
 class AssignCounselors extends Component
 {
@@ -72,7 +74,7 @@ class AssignCounselors extends Component
         }
         $show = $query->orderBy('id', 'DESC')->get();
         $assigned = registerformmodel::where('Counselor','!=',Null)->get();
-
-        return view('livewire.transection.assign-counselors',compact('show','assigned'));
+        $counselor = manageusermodel::where('role','Counselor')->get();
+        return view('livewire.transection.assign-counselors',compact('show','assigned','counselor'));
     }
 }

@@ -29,34 +29,21 @@ function showTab(n) {
 function nextPrev(n) {
     // This function will figure out which tab to display
     var x = document.getElementsByClassName("tab");
-    
-    // Check if the current input has the wire:model attribute
-    var currentInput = x[currentTab].querySelector('input');
-    if (currentInput && currentInput.hasAttribute('wire:model')) {
-        // Do nothing if the input has wire:model attribute
-        return false;
-    }
-
     // Exit the function if any field in the current tab is invalid:
     if (n == 1 && !validateForm()) return false;
-
     // Hide the current tab:
     x[currentTab].style.display = "none";
-    
     // Increase or decrease the current tab by 1:
     currentTab = currentTab + n;
-
     // if you have reached the end of the form...
     if (currentTab >= x.length) {
         // ... the form gets submitted:
         document.getElementById("regForm").submit();
         return false;
     }
-    
     // Otherwise, display the correct tab:
     showTab(currentTab);
 }
-
 
 function validateForm() {
     // This function deals with validation of the form fields
@@ -88,4 +75,9 @@ function fixStepIndicator(n) {
     }
     //... and adds the "active" class on the current step:
     x[n].className += " active";
+}
+
+function selectButton(button) {
+    button.classList.toggle('selected');
+
 }

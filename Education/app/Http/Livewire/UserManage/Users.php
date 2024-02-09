@@ -5,6 +5,7 @@ use App\Models\usermanage\manageusermodel;
 use Livewire\WithPagination;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 use Livewire\Component;
 
@@ -123,6 +124,7 @@ class Users extends Component
     public function render()
     {
         $show = manageusermodel::orderBy('id', 'DESC')->paginate(10);
-        return view('livewire.user-manage.users',compact('show'));
+        $roles = Role::orderBy('id', 'DESC')->get();
+        return view('livewire.user-manage.users',compact('show','roles'));
     }
 }

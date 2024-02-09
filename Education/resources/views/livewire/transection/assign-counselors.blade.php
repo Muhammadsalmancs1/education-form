@@ -19,14 +19,12 @@
                     <div class="d-flex align-items-center flex-md-row flex-column ">
                         <select class="form-select " wire:model="counselor">
                             <option value=""> -- Select Coun --</option>
-                            <option value="UZAIR SOOBASHAH">
-                                UZAIR SOOBASHAH </option>
-                            <option value="ALI BAIG">
-                                ALI BAIG </option>
-                            <option value="Ali Mama">
-                                Ali Mama </option>
-                            <option value="Fariha Aziz">
-                                Fariha Aziz </option>
+                            @forelse ($counselor as $key => $item)
+                            <option value="{{$item->name}}">
+                                {{$item->name}} </option>
+                                @empty
+                                <p>No assigned counselors found</p>
+                            @endforelse
                         </select>
                         <button class="btn btn-primary mx-2 mt-md-0 mt-3">Submit</button>
                     </div>
@@ -152,7 +150,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($assigned as $key=> $item)
+                        @foreach ($assigned as $key => $item)
                         <tr>
                             <td class="text-center">{{$key+1}}</td>
                             <td class="text-center">
@@ -167,14 +165,12 @@
                                             style="min-width: 180px !important;" wire:model="assignupdate.{{$item->id}}">
                                             <!--<option  disabled></option>-->
                                             <option value="{{$item->Counselor}}" selected >{{$item->Counselor}}</option>
-                                            <option value="UZAIR SOOBASHAH">
-                                                UZAIR SOOBASHAH </option>
-                                            <option value="ALI BAIG" >
-                                                ALI BAIG </option>
-                                            <option value="Ali Mama">
-                                                Ali Mama </option>
-                                            <option value="Fariha Aziz">
-                                                Fariha Aziz </option>
+                                            @forelse ($counselor as $key => $item)
+                                            <option value="{{$item->name}}">
+                                                {{$item->name}} </option>
+                                                @empty
+                                                <p>No assigned counselors found</p>
+                                            @endforelse
                                         </select>
 
                                         <button class="btn btn-primary btn-sm ms-2" type="submit"

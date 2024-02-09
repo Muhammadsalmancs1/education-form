@@ -20,7 +20,7 @@ class frontendcontroller extends Controller
         $reference = referencemodel::orderBy('id','Desc')->get();
         $session = sessionmodel::orderBy('id','Desc')->get();
         $time = bookingtimemodel::orderBy('id','Desc')->get();
-        $dates = bookingleavedate_model::orderBy('id','Desc')->get();
+ $dates = bookingleavedate_model::pluck('leave_date')->toArray();
 
 
         return view('frontend/home',compact('country','reference','session','time','dates'));
@@ -28,8 +28,9 @@ class frontendcontroller extends Controller
 
     public function registration_store(Request $req){
         $store = new registerformmodel;
-        $store->Date = $req->date;
+        $store->Date = \DateTime::createFromFormat('m/d/Y', $req->date)->format('Y-m-d');
         $store->time = $req->time;
+        $store->Meeting_type = $req->meetingtype;
         $store->Student_name = $req->name;
         $store->Student_email = $req->email;
         $store->Student_contact = $req->contact;

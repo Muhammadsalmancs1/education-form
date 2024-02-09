@@ -6,7 +6,8 @@ use App\Models\registerformmodel;
 use App\Models\registration\sessionmodel;
 use App\Models\registration\counselorcurrency;
 use App\Models\registration\referencemodel;
-
+use Spatie\Permission\Models\Role;
+use App\Models\usermanage\manageusermodel;
 use RealRashid\SweetAlert\Facades\Alert;
 use Livewire\Component;
 
@@ -19,7 +20,7 @@ class Studentmanagment extends Component
     public $search="";
 // search variables
     public $search_ref;
-    public $search_currency;
+    public $search_counselor;
     public $search_session;
 // update status
 public $statusChanges = [];
@@ -73,7 +74,7 @@ public $statusChanges = [];
 // reset filter
 public function search_reset(){
     $this->search_ref = '';
-    $this->search_currency = '';
+    $this->search_counselor = '';
     $this->search_session = ''; 
 }
 
@@ -111,9 +112,9 @@ public function search_reset(){
         $query->where('Session_Looking', $this->search_session);
     }
 
-    // if ($this->search_currency) {
-    //     $query->where('status', $this->search_currency);
-    // }
+    if ($this->search_counselor) {
+        $query->where('Counselor', $this->search_counselor);
+    }
     if ($this->search_ref) {
         $query->where('Refferene', $this->search_ref);
     }
@@ -143,8 +144,8 @@ public function search_reset(){
         $show = $query->orderBy('id', 'DESC')->paginate(10);
         $referal = referencemodel::get();
         $session= sessionmodel::get();
-        $currancy = counselorcurrency::get();
-        return view('livewire.registration.studentmanagment',compact('show','referal','session','currancy'));
+        $counselor = manageusermodel::where('role','Counselor')->get();
+        return view('livewire.registration.studentmanagment',compact('show','referal','session','counselor'));
     }
 
 

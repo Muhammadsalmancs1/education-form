@@ -29,10 +29,9 @@
                     <div class="mb-3">
                         <label class="form-label">User Role</label>
                         <select class="form-select" name="level" wire:model="role">
-                            <option value="admin">Admin</option>
-                            <option value="staff">Staff</option>
-                            <option value="intern">Intern</option>
-                            <option value="0">User</option>
+                            @foreach ($roles as $item)
+                            <option value="{{$item->name}}">{{$item->name}}</option>  
+                            @endforeach
 
                         </select>
                         @error('role') <span class="error">{{ $message }}</span> @enderror
@@ -132,10 +131,11 @@
                                       <div class="mb-3">
                                           <label class="form-label">User Role</label>
                                           <select class="form-select"  wire:model="role">
-                                            <option value="admin">Admin</option>
-                                            <option value="staff">Staff</option>
-                                            <option value="intern">Intern</option>
-                                            <option value="0">User</option>
+                                            <option value="">Select</option>
+
+                                            @foreach ($roles as $item)
+                                            <option value="{{$item->name}}">{{$item->name}}</option>
+                                            @endforeach
                 
                                         </select>
                                         @error('role') <span class="error">{{ $message }}</span> @enderror

@@ -118,8 +118,13 @@
                     </a>
                 </li>
                 <li class="menu-item ">
-                    <a href="user-access.html" class="menu-link">
+                    <a href="{{route('roles')}}" class="menu-link">
                         <div data-i18n="Text Divider">Users Access Role</div>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a href="{{route('permissions')}}" class="menu-link">
+                        <div data-i18n="Text Divider">Users Permissions</div>
                     </a>
                 </li>
 

@@ -36,11 +36,11 @@
 
                     <div class="col-lg-3 mb-3">
 
-                        <select class="form-select" wire:model="search_currency">
+                        <select class="form-select" wire:model="search_counselor">
                             <option>Select Counselor </option>
-                            @foreach ($currancy as $item)
-                            <option value="{{$item->currency}}">
-                                {{$item->currency}} </option>
+                            @foreach ($counselor as $item)
+                            <option value="{{$item->name}}">
+                                {{$item->name}} </option>
                             @endforeach
                           
                         </select>

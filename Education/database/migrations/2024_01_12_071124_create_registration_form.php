@@ -17,6 +17,7 @@ class CreateRegistrationForm extends Migration
             $table->id();
             $table->date('Date');
             $table->dateTimeTz('time', $precision = 0);
+            $table->string('Meeting_type')->nullable();
             $table->string('Student_name');
             $table->string('Student_email')->nullable();
             $table->string('Student_contact');
