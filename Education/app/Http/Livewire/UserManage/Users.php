@@ -2,10 +2,15 @@
 
 namespace App\Http\Livewire\UserManage;
 use App\Models\usermanage\manageusermodel;
+use App\Models\User;
+
 use Livewire\WithPagination;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 use Livewire\Component;
 
@@ -33,12 +38,13 @@ class Users extends Component
     }
     public function saveusers(){
         $validatedData =  $this->validate(); 
-        $user = new manageusermodel;
+        $user = new User;
         $user->name = $this->name;
         $user->email = $this->email;
         $user->password = Hash::make($this->password);
         $user->role = $this->role;
         $user->save();
+        $user->assignRole($this->role);
 
         $this->dispatchBrowserEvent('swal', [
             'position' => 'center-center',
@@ -101,12 +107,18 @@ class Users extends Component
     }
     public function updaterecord(){
         $validatedData =  $this->validate(); 
-        $user = manageusermodel::find($this->item_id);
+        $user = User::find($this->item_id);
         $user->name = $this->name;
         $user->email = $this->email;
         $user->password = Hash::make($this->password);
         $user->role = $this->role;
         $user->update();
+        
+    if ($user->hasRole($this->role)) {
+        $user->removeRole($this->role);
+    }
+
+    $user->assignRole($this->role);
         $this->dispatchBrowserEvent('swal', [
             'position' => 'center-center',
             'icon' => 'success',

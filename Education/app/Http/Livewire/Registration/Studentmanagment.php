@@ -8,6 +8,7 @@ use App\Models\registration\counselorcurrency;
 use App\Models\registration\referencemodel;
 use Spatie\Permission\Models\Role;
 use App\Models\usermanage\manageusermodel;
+use App\Models\registration\followcomments;
 use RealRashid\SweetAlert\Facades\Alert;
 use Livewire\Component;
 
@@ -24,13 +25,28 @@ class Studentmanagment extends Component
     public $search_session;
 // update status
 public $statusChanges = [];
+// main search record
+ public $mainsearch;
 
+//  follow up
+public $followrecord;
+
+public $follows = [
+    ['followup' => '', 'comment' => '']
+];
+protected $followRules = [
+    'follows.*.followup' => 'required',
+    'follows.*.comment' => 'required',
+];
 
     public function view($id){
         $result= registerformmodel::find($id);
         $this->view = $result; 
 
     }
+
+ 
+
 
     // delete record
     public function deleteRecord($item_id)
@@ -103,11 +119,54 @@ public function search_reset(){
         }
     }
 
+// follow up
+
+public function followup($item_id){
+    $find = registerformmodel::find($item_id);
+    $this->followrecord = $find;
+    $latestComment = followcomments::where('student_id', $item_id)->orderBy('id','DESC')->latest()->first();
+    $this->follows = [
+        ['followup' => @$latestComment->followup, 'comment' => @$latestComment->comment]
+    ];
+}
+
+public function addfollows()
+{
+    array_push($this->follows, ['followup' => '', 'comment' => '']);
+}
+
+public function followupform($studentid){
+ 
+    $validatedData =  $this->validate($this->followRules); 
+    $followsup = [];
+    foreach ($this->follows as $item) {
+        $followsup[] = ['followup' => $item['followup'], 'comment' => $item['comment']];
+    }
+    $followcommentsData = [];
+    foreach ($followsup as $follow) {
+        $followcommentsData[] = array_merge(['student_id' => $studentid], $follow);
+    }
+    followcomments::insert($followcommentsData);
+    
+     $this->dispatchBrowserEvent('swal', [
+         'position' => 'center-center',
+         'icon' => 'success',
+         'title' => 'Comment Add Successfully',
+         'showConfirmButton' => false,
+         'timer' => 2000,
+     ]);
+      $this->reset('follows');
+      $this->dispatchBrowserEvent('close-model');
+}
+
 
     public function render()
     {
         $query = registerformmodel::query();
-        
+       
+        if ($this->mainsearch) {
+            $query->where('Status', $this->mainsearch);
+        }
     if ($this->search_session) {
         $query->where('Session_Looking', $this->search_session);
     }
@@ -145,7 +204,8 @@ public function search_reset(){
         $referal = referencemodel::get();
         $session= sessionmodel::get();
         $counselor = manageusermodel::where('role','Counselor')->get();
-        return view('livewire.registration.studentmanagment',compact('show','referal','session','counselor'));
+        $followuprecord = $this->followrecord;
+        return view('livewire.registration.studentmanagment',compact('show','referal','session','counselor','followuprecord'));
     }
 
 

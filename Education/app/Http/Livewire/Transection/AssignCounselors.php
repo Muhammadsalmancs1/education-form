@@ -74,7 +74,7 @@ class AssignCounselors extends Component
         }
         $show = $query->orderBy('id', 'DESC')->get();
         $assigned = registerformmodel::where('Counselor','!=',Null)->get();
-        $counselor = manageusermodel::where('role','Counselor')->get();
-        return view('livewire.transection.assign-counselors',compact('show','assigned','counselor'));
+        $counse = manageusermodel::where('role','Counselor')->get();
+        return view('livewire.transection.assign-counselors',compact('show','assigned','counse'));
     }
 }

@@ -25,31 +25,32 @@
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class=" dashboard-btn  mb-3 d-flex justify-content-between align-items-center "
+                                        style=" color:white !important; background-color: #8d8d8d !important">
+                                        <div>
+                                            <a href="{{route('studentlists','')}}" class="text-white">
+                                                All Student
+                                            </a>
+                                        </div>
+                                        <div><i class="bi bi-arrow-right-circle-fill ms-3"></i></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class=" dashboard-btn  mb-3 d-flex justify-content-between align-items-center "
                                         style=" color:white !important; background-color: #17a2b8 !important;">
                                         <div>
-                                            <a href="" class="text-white">
+                                            <a href="{{route('studentlists','Inquiry')}}" class="text-white">
                                                 In Query Student
                                             </a>
                                         </div>
                                         <div><i class="bi bi-arrow-right-circle-fill ms-3"></i></div>
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <div class=" dashboard-btn  mb-3 d-flex justify-content-between align-items-center "
-                                        style=" color:white !important; background-color: #8d8d8d !important">
-                                        <div>
-                                            <a href="" class="text-white">
-                                                In Potential Student
-                                            </a>
-                                        </div>
-                                        <div><i class="bi bi-arrow-right-circle-fill ms-3"></i></div>
-                                    </div>
-                                </div>
+                              
                                 <div class="col-lg-4">
                                     <div class=" dashboard-btn  mb-3 d-flex justify-content-between align-items-center "
                                         style=" color:white !important; background-color: #28a745!important;">
                                         <div>
-                                            <a href="" class="text-white">
+                                            <a href="{{route('studentlists','In Progress')}}" class="text-white">
                                                 In Progress Student
                                             </a>
                                         </div>
@@ -60,7 +61,7 @@
                                     <div class=" dashboard-btn  mb-3 d-flex justify-content-between align-items-center "
                                         style=" color:white !important; background-color: #193765 !important">
                                         <div>
-                                            <a href="" class="text-white">
+                                            <a href="{{route('studentlists','Visa Accepted')}}" class="text-white">
                                                 Visa Accepted Student
                                             </a>
                                         </div>
@@ -71,8 +72,8 @@
                                     <div class=" dashboard-btn  mb-3 d-flex justify-content-between align-items-center "
                                         style=" color:white !important; background-color: #196545 !important">
                                         <div>
-                                            <a href="" class="text-white">
-                                                Visa Refused Student
+                                            <a href="{{route('studentlists','Cas_T20')}}" class="text-white">
+                                                Cas/T20
                                             </a>
                                         </div>
                                         <div><i class="bi bi-arrow-right-circle-fill ms-3"></i></div>
@@ -82,7 +83,7 @@
                                     <div class=" dashboard-btn  mb-3 d-flex justify-content-between align-items-center "
                                         style=" color:white !important; background-color: #a5742b !important">
                                         <div>
-                                            <a href="" class="text-white">
+                                            <a href="{{route('studentlists','Paid')}}" class="text-white">
                                                 Paid Student
                                             </a>
                                         </div>

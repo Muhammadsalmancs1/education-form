@@ -19,12 +19,10 @@
                     <div class="d-flex align-items-center flex-md-row flex-column ">
                         <select class="form-select " wire:model="counselor">
                             <option value=""> -- Select Coun --</option>
-                            @forelse ($counselor as $key => $item)
+                            @foreach ($counse as $key => $item)
                             <option value="{{$item->name}}">
                                 {{$item->name}} </option>
-                                @empty
-                                <p>No assigned counselors found</p>
-                            @endforelse
+                            @endforeach
                         </select>
                         <button class="btn btn-primary mx-2 mt-md-0 mt-3">Submit</button>
                     </div>
@@ -165,12 +163,10 @@
                                             style="min-width: 180px !important;" wire:model="assignupdate.{{$item->id}}">
                                             <!--<option  disabled></option>-->
                                             <option value="{{$item->Counselor}}" selected >{{$item->Counselor}}</option>
-                                            @forelse ($counselor as $key => $item)
-                                            <option value="{{$item->name}}">
-                                                {{$item->name}} </option>
-                                                @empty
-                                                <p>No assigned counselors found</p>
-                                            @endforelse
+                                            @foreach ($counse as $key => $coun)
+                                            <option value="{{$coun->name}}">
+                                                {{$coun->name}} </option>
+                                            @endforeach
                                         </select>
 
                                         <button class="btn btn-primary btn-sm ms-2" type="submit"

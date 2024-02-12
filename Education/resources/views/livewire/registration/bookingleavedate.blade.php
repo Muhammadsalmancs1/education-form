@@ -11,7 +11,10 @@
                 @error('developers.' . $index . '.leave_date') 
                 <span class="error">{{ $message }}</span> 
             @enderror
-                <button class="delete-leave" wire:click="removeindex({{$index}})"><i class="bi bi-trash-fill"></i></button>
+            @if ($index != 0)
+                
+            <button class="delete-leave" wire:click="removeindex({{$index}})"><i class="bi bi-trash-fill"></i></button>
+            @endif
                 </div>
                 @endforeach
             </div>
@@ -36,6 +39,7 @@
        <div class="row  p-0">
         <div class="col-lg-12">
             <label for="" class="text-danger form-label">Number {{$index}} <span class="time-number"></span></label>
+          
         </div>
         <div class="mb-3 col-lg-6">
             <label class="form-label" for="basic-default-fullname">Start Time </label>
@@ -44,14 +48,21 @@
             <span class="error">{{ $message }}</span> 
         @enderror
           </div>
+         
           <div class="mb-3 col-lg-6">
+          
               <label class="form-label" for="basic-default-fullname">End Time</label>
               <input type="time" class="form-control" placeholder="Enter Date" wire:model="time.{{ $index }}.end_time">
               @error('time.' . $index . '.end_date') 
               <span class="error">{{ $message }}</span> 
           @enderror
+          @if ($index != 0)
+          <button class="" wire:click="removetimeindex({{$index}})"><i class="bi bi-trash-fill"></i></button>
+          @endif
           </div>
+         
        </div>
+      
        @endforeach
     </div>
         <div class="col-lg-6 ms-auto ">
@@ -66,37 +77,42 @@
 </div>
 
 <div class="content-backdrop fade"></div>
-</div>
-<!-- Content wrapper -->
-</div>
-<!-- / Layout page -->
 
-<!-- Overlay -->
-<div class="layout-overlay layout-menu-toggle"></div>
-</div>
-<script type="text/template" id="leave_template" wire:ignore.self>
-<div class="mb-3 col-lg-6 leave-div" style="position: relative;" >
-<label class="form-label text-danger" for="" >Leave <span class="leave-number"></span></label>
-<input type="date" class="form-control" placeholder="Enter Date" wire:model="developers.{{ @$index }}.leave_date" name="leave_date[]">
-<button class="delete-leave"><i class="bi bi-trash-fill"></i></button>
-</div>
-</script>
 
-<script type="text/template" id="time_template">
-<div class="row time-div">
-<div class="col-lg-12" style="position: relative;">
-<label for="" class="text-danger form-label">Number <span class="time-number"></span></label>
-<button class="delete-time"><i class="bi bi-trash-fill"></i></button>
+ <!-- Striped Rows -->
+ <div class="card px-4 pb-4">
+
+    <h5 class="card-header px-0">Date Listing</h5>
+    <div class="table-responsive">
+      {{-- <input type="search" class="form-control ps-4 mb-4" wire:model="search" placeholder="Search..."> --}}
+      <table class="table  nowrap border-0 " style="width:100%">
+          <thead>
+              <tr class="dt-head">
+          <th>#</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+          @foreach ($show as $key=> $item)
+          <tr>
+            <td>{{$key}}</td>
+            <td>{{$item->leave_date}}</td>
+            <td>
+              <div class="d-flex align-items-center">
+                <button class="delete-data" wire:click="confirmDelete({{$item->id}})">Delete</button>
+              </div>
+            </td>
+          </tr> 
+                   
+          @endforeach
+      </tbody>
+
+    </table>
+    <div>
+      {{$show->links()}}
+    </div>
+  </div>
 </div>
-<div class="mb-3 col-lg-6">
-<label class="form-label" for="basic-default-fullname">Start Time</label>
-<input type="time" class="form-control" placeholder="Enter Date">
-</div>
-<div class="mb-3 col-lg-6">
-<label class="form-label" for="basic-default-fullname">End Time</label>
-<input type="time" class="form-control" placeholder="Enter Date">
-</div>
-</div>
-</script>
 
 </div>

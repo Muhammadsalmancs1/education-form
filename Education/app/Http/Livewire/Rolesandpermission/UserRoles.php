@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Rolesandpermission;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\Permission\Models\Role;
+use DB;
 use Spatie\Permission\Models\Permission;
 class UserRoles extends Component
 {
@@ -12,9 +13,11 @@ class UserRoles extends Component
     protected $paginationTheme = 'bootstrap';
     public $role;
     public $item_id;
+    public $rolename;
     public $updateMode = false;
     public $search = '';
     public $permissiongive = [];
+    public $assignpermissionsofrole = [];
     protected $listeners = ['destroy'];
     protected $rules = [
         'role' => 'required|min:2',
@@ -77,10 +80,57 @@ class UserRoles extends Component
 
     }
 
-    public function Assignpermissions(){
-        dd($this->permissiongive);
+    public function assigncontrol($item_id){
+        $assignroles = [];
+      $rolefind = Role::find($item_id);
+      $this->rolename = $rolefind->id;
+      $this->assignpermissionsofrole = $rolefind->permissions;
+     
+
     }
 
+    public function Assignpermissions(){
+        $assign = [];
+        foreach ($this->permissiongive as $key => $value) {
+            $assign[] = $value;
+        }
+        $role = Role::find($this->rolename);
+        foreach ($assign as $key => $permission) {
+            if($role->hasPermissionTo($permission))
+            {
+                $this->dispatchBrowserEvent('swal', [
+                    'position' => 'center-center',
+                    'icon' => 'success',
+                    'title' => 'Permission Already Exists',
+                    'showConfirmButton' => false,
+                    'timer' => 2000,
+                ]);
+            }
+            else{
+    
+                $role->givePermissionTo($permission);
+                $this->dispatchBrowserEvent('swal', [
+                    'position' => 'center-center',
+                    'icon' => 'success',
+                    'title' => 'Permission Added Successfully',
+                    'showConfirmButton' => false,
+                    'timer' => 2000,
+                ]);
+               $this->reset('permissiongive');
+            }
+            
+        }
+            
+    }
+
+    public function removepermission($item_id){
+        $role = Role::find($this->rolename);
+        if($role->hasPermissionTo($item_id))
+        {
+            $role->revokePermissionTo($item_id);
+            
+        }
+    }
     public function confirmDelete($item_id)
     {
         $this->item_id = $item_id;
@@ -121,7 +171,7 @@ class UserRoles extends Component
     {
         $show = Role::orderBy('id', 'DESC')->paginate(10);
         $permissions = Permission::orderBy('id', 'DESC')->get();
-
-        return view('livewire.rolesandpermission.user-roles',compact('show','permissions'));
+        $datalistingpermission = $this->assignpermissionsofrole;
+        return view('livewire.rolesandpermission.user-roles',compact('show','permissions','datalistingpermission'));
     }
 }

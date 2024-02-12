@@ -25,6 +25,7 @@ class Bookingleavedate extends Component
         'time.*.start_time' => 'required',
         'time.*.end_time' => 'required',
     ];
+    public $item_id;
     public function updated($fields)
     {
         $this->validateOnly($fields);
@@ -96,8 +97,47 @@ class Bookingleavedate extends Component
           $this->reset('time');
     }
 
+    public function confirmDelete($item_id)
+    {
+        $this->item_id = $item_id;
+
+        $this->dispatchBrowserEvent('swal:confirm', [
+            'position' => 'center',
+            'icon' => 'warning',
+            'title' => 'Are You Sure?',
+            'showConfirmButton' => true,
+            'timer' => 0,
+            'item_id' => $item_id,
+        ]);
+    }
+
+    public function destroy()
+    {
+        $result = bookingleavedate_model::find($this->item_id)->delete();
+    
+        if ($result) {
+            $this->dispatchBrowserEvent('swal', [
+                'position' => 'center-center',
+                'icon' => 'success',
+                'title' => 'Record Deleted Successfully',
+                'showConfirmButton' => false,
+                'timer' => 2000,
+            ]);
+        } else {
+            $this->dispatchBrowserEvent('swal', [
+                'position' => 'center-center',
+                'icon' => 'error',
+                'title' => 'Error Deleting Record',
+                'showConfirmButton' => true,
+                'timer' => 2000,
+            ]);
+        }
+        $this->emit('refreshData');
+    }
+
     public function render()
     {
-        return view('livewire.registration.bookingleavedate');
+        $show = bookingleavedate_model::orderBy('id','DESC')->paginate(10); // assuming you want to paginate the results
+        return view('livewire.registration.bookingleavedate', ['show' => $show]);
     }
 }

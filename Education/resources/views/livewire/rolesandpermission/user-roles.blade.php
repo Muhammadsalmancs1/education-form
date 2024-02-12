@@ -25,7 +25,7 @@
                         <td>
                           <div class="d-flex align-items-center">
                             <button type="button" class="edit-data"
-                            data-bs-toggle="modal" data-bs-target="#access" wire:click="assigncontrol({{$item->name}})">
+                            data-bs-toggle="modal" data-bs-target="#access" wire:click="assigncontrol({{$item->id}})">
                             Access Controls
                         </button>
                             <button type="button" wire:click="editRecord({{$item->id}})" data-bs-toggle="modal" data-bs-target="#Editmodel"
@@ -115,6 +115,7 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered" style="min-width: 700px;" >
                                     <thead>
+                                
                                         <tr class="dt-head">
                                             <th scope="col">Permission Name</th>
                                             <th scope="col" class="text-center">Assign</th>
@@ -138,14 +139,22 @@
                                            
                                         </tr>
                                         @endforeach
-                                    
+                                      
                                     </tbody>
                                 </table>
+                            </div>
+                            <div>
+                              @foreach ($datalistingpermission as $item)
+                              
+                              <span class=" mx-2 my-3 py-2" > {{$item->name}}  <button type="button" class="btn-close px-2" style="font-size:12px;" wire:click="removepermission({{ $item->id }})" ></button></span>
+                                  
+                              @endforeach
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
+                  <button type="button" class="btn btn-warning" data-bs-dismiss="modal" aria-label="Close">Close</button>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal" wire:click="Assignpermissions">Submit</button>
                     <!-- <button type="button" class="btn btn-primary">Save</button> -->
                 </div>

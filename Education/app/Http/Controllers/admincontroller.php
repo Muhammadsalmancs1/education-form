@@ -9,4 +9,8 @@ class admincontroller extends Controller
 
         return view('admin/index');
     }
+
+    public function mainsearch($mainsearch = null){
+        return view('admin/registration/studentmanagement',compact('mainsearch'));
+    }
 }

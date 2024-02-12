@@ -167,7 +167,7 @@
                                 <td class="text-center"> <button type="button"
                                         class="btn btn-primary btn-xs edit-btn" data-bs-toggle="modal"
                                         data-bs-target="#followUp" title="FollowUp"
-                                        data-toggle="tooltip">
+                                        data-toggle="tooltip" wire:click="followup({{$item->id}})">
                                         FollowUp
                                     </button>
                                 </td>
@@ -347,6 +347,104 @@
              </div>
          </div>
      </div>
+
+
+    <!--follow Modal -->
+    <div class="modal fade" id="followUp" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true" wire:ignore.self wire:dirty>
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header modal-header-style">
+                <h5 class="modal-title mb-3 text-white" id="staticBackdropLabel">Student Follow Up </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" wire.ignore.self wire:submit.prevent="followupform({{@$followuprecord->id}})">
+                <div class="modal-body h-auto">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-3 mb-3">
+                                <label class="control-label col-sm-2 ">Session</label>
+                                <input type="text" class="form-control name" name="name" value="{{@$followuprecord->Session_Looking}}" readonly="">
+                            </div>
+                            <div class="col-lg-3 mb-3">
+                                <label class="control-label col-sm-2 ">Name</label>
+                                <input type="text" class="form-control name" name="name"
+                                    value="{{@$followuprecord->Student_name}}" placeholder="Enter name" readonly="">
+                            </div>
+
+                            <div class="col-lg-3 mb-3">
+                                <label class="control-label col-sm-10 ">Interested Country *</label>
+                                <input type="text" class="form-control name" name="email" value="{{@$followuprecord->Interested_Country}}"
+                                    placeholder="  " readonly="">
+
+                            </div>
+                            <div class="col-lg-3 mb-3">
+                                <label class="control-label col-sm-3 col-md-7">Interested Courses </label>
+                                <input type="text" class="form-control name" name="email" value="{{@$followuprecord->Courses}}"
+                                    placeholder="  " readonly="">
+                            </div>
+
+                            <div class="col-lg-3 mb-3">
+                                <label class="control-label col-sm-3 col-md-6">Contact# </label>
+                                <input type="text" class="form-control name" name="contact"
+                                    placeholder="Enter contact #" value="{{@$followuprecord->Student_contact}}" readonly="">
+                            </div>
+                            <div class="col-lg-9 mb-3">
+                                <label class="control-label col-sm-5 ">Address</label>
+                                <input type="text" class="form-control name" name="address"
+                                value="{{@$followuprecord->Student_address}}"
+                                    placeholder="Enter address" readonly="">
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 mb-3 mt-4">
+                                <div class="comment-div">
+                                    Comments
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add-more-comment-div">
+                            @foreach($follows as $index => $developer)  
+                            <div class="row ">
+                                <div class="col-lg-3 mb-3">
+                                    <label class="control-label col-sm-5 "> Follow Up {{$index}} </label>
+                                    <input type="date" class="form-control name" name="address" wire:model="follows.{{ $index }}.followup" value=""
+                                        placeholder="Enter address">
+                                </div>
+                                <!-- <div class="col-lg-3 mb-3">
+                                    <label class="control-label col-sm-5 "
+                                        style="width: fit-content; white-space: nowrap;"> Next Follow Up</label>
+                                    <input type="date" class="form-control name" name="address" value=""
+                                        placeholder="Enter address" readonly="">
+                                </div> -->
+
+                                <div class="col-lg-9 mb-3">
+                                    <label class="control-label col-sm-5 "> Comments {{$index}}</label>
+                                    <input type="text" class="form-control name" name="address" wire:model="follows.{{ $index }}.comment" value=""
+                                        placeholder="Enter address">
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                        <div class="row">
+                            <div class="col-lg-12 mb-3 d-flex justify-content-end">
+                                <button type="button" class="btn btn-primary" wire:click="addfollows">Add More
+                                    Comments</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success w-50 mx-auto" wire:click="followupform({{@$followuprecord->id}})">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 </div>
 
 

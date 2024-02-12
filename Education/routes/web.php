@@ -60,6 +60,9 @@ Route::get('permissions', [PermissionController::class, 'index'])->name('permiss
 Route::get('roles', [RoleController::class, 'index'])->name('roles');
 
 
+// main search redirect route
+Route::get('studentlists/{mainsearch?}', [admincontroller::class, 'mainsearch'])->name('studentlists');
+
 
 
 });

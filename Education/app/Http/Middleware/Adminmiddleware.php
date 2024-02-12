@@ -19,7 +19,7 @@ class Adminmiddleware
     {
         if(Auth::check())
         {
-            if(Auth::user()->role == 'admin')
+            if(Auth::user()->role !== '0')
             {
                 return $next($request);
             }

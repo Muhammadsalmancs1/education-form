@@ -720,13 +720,13 @@
    function selectdate(){
     $('#date').select();
     }
-    var availableDates = <?php echo json_encode($dates); ?>;
+    var unavailableDates = <?php echo json_encode($dates); ?>;
 
     $( function() {
     $( "#date" ).datepicker({
         beforeShowDay: function(date) {
             var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
-            return [ availableDates.indexOf(string) != -1 ];
+            return [ unavailableDates.indexOf(string) == -1 ];
         }
     });
 } );
