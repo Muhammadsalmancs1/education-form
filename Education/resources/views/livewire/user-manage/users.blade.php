@@ -129,10 +129,16 @@
                                   </div>
 
                                   <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Password</label>
+                                        <input type="password" class="form-control" placeholder="Enter Password" wire:model="password" />
+                                        @error('password') <span class="error">{{ $message }}</span> @enderror
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-6">
                                       <div class="mb-3">
                                           <label class="form-label">User Role</label>
                                           <select class="form-select"  wire:model="role">
-                                            <option value="">Select</option>
                                             <option value="">--SELECT--</option>
 
                                             @foreach ($roles as $item)
@@ -144,45 +150,12 @@
                                       </div>
                                   </div>
 
-                                  <div class="col-lg-6">
-                                      <div class="mb-3">
-                                          <label class="form-label">Status</label>
-                                          <select class="form-select" name="level" disabled>
-                                              <option value="1">Active</option>
-                                              <option value="2">Deactive</option>
-                                          </select>
-                                      </div>
-                                  </div>
 
                                   <div class="d-flex justify-content-end">
                                       <button type="button" class="btn btn-primary" wire:click="updaterecord" >Update</button>
                                   </div>
                               </div>
 
-                              <div class="row mt-4">
-                                  <div class="col-lg-12">
-                                      <h5 class="modal-title mb-3">Change Admin password
-                                      </h5>
-                                  </div>
-                                  <div class="col-lg-6">
-                                      <div class="mb-3">
-                                          <label class="form-label">Old Password</label>
-                                          <input type="password" class="form-control" placeholder="******" />
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-6">
-                                      <div class="mb-3">
-                                          <label class="form-label">New Password</label>
-                                          <input type="password" class="form-control" placeholder="******" />
-                                      </div>
-                                  </div>
-
-
-
-                                  <div class="d-flex justify-content-end">
-                                      <button type="submit" class="btn btn-primary">Change</button>
-                                  </div>
-                              </div>
                           </div>
                       </div>
 

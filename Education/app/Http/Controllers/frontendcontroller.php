@@ -27,6 +27,8 @@ class frontendcontroller extends Controller
     }
 
     public function registration_store(Request $req){
+        $selectedCountries = $req->input('states');
+        $interested_country = implode(',', $selectedCountries);
         $store = new registerformmodel;
         $store->Date = \DateTime::createFromFormat('m/d/Y', $req->date)->format('Y-m-d');
         $store->time = $req->time;
@@ -42,7 +44,7 @@ class frontendcontroller extends Controller
         $store->Qualification_3 = $req->qualification_3;
         $store->Grade_3 = $req->grade_3;
         $store->Education_country = $req->country;
-        $store->Interested_Country = $req->interested_country;
+        $store->Interested_Country = $interested_country;
         $store->Session_Looking = $req->session;
         $store->Year = $req->year;
         $store->Courses = $req->course;

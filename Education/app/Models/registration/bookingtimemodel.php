@@ -15,4 +15,8 @@ class bookingtimemodel extends Model
         'status',
 
     ];
+
+    public function booktime(){
+        return $this->hasMany('App\Models\registerformmodel','time','tart_time-end_time');
+    }
 }

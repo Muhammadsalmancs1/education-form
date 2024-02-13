@@ -128,7 +128,7 @@ class UserRoles extends Component
         if($role->hasPermissionTo($item_id))
         {
             $role->revokePermissionTo($item_id);
-            
+            $this->assigncontrol($role->id);
         }
     }
     public function confirmDelete($item_id)
