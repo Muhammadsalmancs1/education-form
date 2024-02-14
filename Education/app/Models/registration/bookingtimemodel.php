@@ -17,6 +17,6 @@ class bookingtimemodel extends Model
     ];
 
     public function booktime(){
-        return $this->hasMany('App\Models\registerformmodel','time','tart_time-end_time');
+        return $this->hasMany('App\Models\registerformmodel','timeid','id');
     }
 }

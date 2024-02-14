@@ -38,11 +38,27 @@
                     <br>
                     <div class="d-flex justify-content-center flex-wrap my-lg-5 my-4">
                         @foreach ($time as $item)
+                        @if ($item->booktime !== null)
+                            @php
+                                $showWelcome = false;
+                                foreach ($item->booktime as $assigntime) {
+                                    if ($assigntime->Status == 'Pending') {
+                                        $showWelcome = true;
+                                        break;
+                                    }
+                                }
+                            @endphp
+                            @if ($showWelcome)
+                            <button type="button" class="me-2 main-btn2 mb-3" style="text-decoration:line-through;" value="" disabled>{{ date('H:i', strtotime($item->start_time)) }} - {{ date('H:i', strtotime($item->end_time)) }}</button>
+                            @else
+                    
+                            <button type="button" class="me-2 main-btn2 mb-3" value="{{ date('H:i', strtotime($item->start_time)) }} - {{ date('H:i', strtotime($item->end_time)) }},{{$item->id}}" onclick="addValueToForm('{{ date('H:i', strtotime($item->start_time)) }} - {{ date('H:i', strtotime($item->end_time)) }}', '{{$item->id}}')">{{ date('H:i', strtotime($item->start_time)) }} - {{ date('H:i', strtotime($item->end_time)) }}</button>
                             
-                        
-                        <button type="button" class="me-2 main-btn2 mb-3" value="{{ date('H:i', strtotime($item->start_time)) }} - {{ date('H:i', strtotime($item->end_time)) }}" onclick="addValueToForm('{{ date('H:i', strtotime($item->start_time)) }} - {{ date('H:i', strtotime($item->end_time)) }}')">{{ date('H:i', strtotime($item->start_time)) }} - {{ date('H:i', strtotime($item->end_time)) }}</button>
+                            @endif
+                            @endif
                         @endforeach
-                        <input type="hidden" id="timeInput" name="time" />
+                    <input type="hidden" id="timeInput" name="time" />
+                    <input type="hidden" id="timeid" name="timeid" />
                     </div>
                     <h1 class="top-heading mb-4">Select Meeting Type</h1>
                     <div class="row justify-content-center ">
@@ -383,7 +399,6 @@
                         <div class="col-lg-6 lube-input mb-3">
                             <label class="control-label mb-2 mt-2 col-sm-10 ">Interested Countries <span class="text-danger">*</span></label>
                             <div class="select-country">
-                                <label for="" class="mb-1">Select Country</label><br>
                                 <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
                                     @foreach ($country as $item)
                                     <option value="{{$item->country}}">
@@ -464,10 +479,12 @@
 
    @section('script')
    <script>
-    function addValueToForm(button) {
-        var timeInput = document.getElementById("timeInput");
-        timeInput.value = button;
-       
+function addValueToForm(button, id) {
+    var timeInput = document.getElementById("timeInput");
+    var timeid = document.getElementById("timeid");
+    timeInput.value = button;
+    timeid.value = id;
+
     // Resetting all buttons' text color to black
     var buttons = document.getElementsByClassName("main-btn2");
     for (var i = 0; i < buttons.length; i++) {
@@ -475,10 +492,15 @@
         buttons[i].style.backgroundColor = ""; // Reset background color
     }
 
-    // Setting the clicked button's text color to white and background color to red
-    var clickedButton = document.querySelector('button[value="' + button + '"]');
-    clickedButton.style.backgroundColor = "red";
-    clickedButton.style.color = "white";
+    // Getting the clicked button
+    var clickedButton = document.querySelector('button[value="' + button + ',' + id + '"]');
+    
+    // Check if the button is already selected
+    if (clickedButton.style.backgroundColor !== "red") {
+        // Setting the clicked button's text color to white and background color to red
+        clickedButton.style.backgroundColor = "red";
+        clickedButton.style.color = "white";
+    }
 }
 
     $('.main-btn2').on('click', function() {
