@@ -19,6 +19,11 @@
   
           $('#followUp').modal('hide');
   
-  })
+  });
+  window.addEventListener('close-editmodel', event => {
+  
+  $('#view').modal('hide');
+
+});
 </script>
 @endsection

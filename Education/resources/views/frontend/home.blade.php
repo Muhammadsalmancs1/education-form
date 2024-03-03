@@ -23,7 +23,7 @@
                         <!-- DEMO HTML -->
                         
                         <div class="calendar-wrapper mt-4 d-flex">
-                            <input id="date" type="text" class="form-control" readonly name="date" placeholder="yy-mm-dd">
+                            <input id="date" type="text" class="form-control" name="date" placeholder="yy-mm-dd" required>
                             <span class="input-group-addon">
                                 <i class="fa fa-calendar" onclick="selectdate()"></i>
                             </span>
@@ -498,7 +498,7 @@ function addValueToForm(button, id) {
     // Check if the button is already selected
     if (clickedButton.style.backgroundColor !== "red") {
         // Setting the clicked button's text color to white and background color to red
-        clickedButton.style.backgroundColor = "red";
+        clickedButton.style.backgroundColor = "#cd2122";
         clickedButton.style.color = "white";
     }
 }

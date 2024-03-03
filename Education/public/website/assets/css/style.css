@@ -187,7 +187,7 @@ input.invalid {
   align-items: center;
   gap: 5px;
   flex-shrink: 0;
-  color: #cd2122 !important;
+  color: #cd2122;
   text-align: center;
   font-feature-settings: 'clig' off, 'liga' off;
   /* SB - Text */

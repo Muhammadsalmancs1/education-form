@@ -17,7 +17,7 @@
 
         <div id="sm" class="tabcontent">
             <div class="card  pb-4 px-lg-4 px-2">
-                <h5 class="card-header px-0 bg-white border-bottom-0  py-3 mb-2">Student Management</h5>
+                <h5 class="card-header px-0 bg-white border-bottom-0  py-3 mb-2">@if($search){{$search}} @else Student Management @endif</h5>
                 <form action="" wire.submit="search_form" wire.ignore.self>
                 <div class="row ">
                     <div class="col-lg-3 mb-3">
@@ -151,14 +151,10 @@
                                     </button>
                                 </td>
                                 <td class="text-center">
-                                    <button type="button" wire:click="view({{$item->id}})" data-bs-toggle="modal" data-bs-target="#view"
-                                        class="btn btn-primary btn-xs me-2 view-btn" title="View"
-                                        data-toggle="tooltip">
-                                        View
-                                    </button>
+                              
 
-                                    <button type="button" data-bs-toggle="modal" data-bs-target="#edit"
-                                        class="btn btn-primary btn-xs edit-btn" title="Edit"
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#view"
+                                    class="btn btn-primary btn-xs me-2 view-btn" wire:click="view({{$item->id}})" title="Edit"
                                         data-toggle="tooltip">
                                         Edit
                                     </button>
@@ -212,136 +208,172 @@
 
          <!--View Modal -->
          <div class="modal fade" id="view" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-         aria-labelledby="staticBackdropLabel" aria-hidden="true" wire:ignore.self wire:dirty>
+         aria-labelledby="staticBackdropLabel" aria-hidden="true" wire:ignore.self>
          <div class="modal-dialog  modal-fullscreen ">
              <div class="modal-content ">
                  <div class="modal-header modal-header-style">
                      <h5 class="modal-title mb-3 text-white " id="staticBackdropLabel">Student Registration</h5>
                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                  </div>
-                 <form action="">
+                 <form action="" wire:submit.prevent="updateregistrationform()">
                      <div class="modal-body">
                          <div class="container ">
                              <div class="row">
                                  <div class="col-lg-4 lube-input mb-3">
                                      <label class="control-label mb-2 mt-2 col-sm-2 ">Name<span
                                              class="text-danger">*</span></label>
-                                     <input type="text" class="form-control name" name="name" readonly value="{{optional($view)->Student_name}}"
+                                     <input type="text" class="form-control name" name="name" wire:model="name"  value="{{optional($view)->Student_name}}"
                                          required="">
                                      
                                  </div>
                                  <div class="col-lg-4 lube-input mb-3">
                                      <label class="control-label mb-2 mt-2 col-sm-3 col-md-7">Email Address </label>
-                                     <input readonly type="email" class="form-control name" name="email"
+                                     <input  type="email" class="form-control name" wire:model="email" name="email"
                                          value="{{optional($view)->Student_email}}">
                                  </div>
                                  <div class="col-lg-4 lube-input mb-3">
                                      <label class="control-label mb-2 mt-2 col-sm-3 col-md-6">Contact# <span
                                              class="text-danger">*</span> </label>
-                                     <input readonly type="number" class="form-control name" name="contact"
-                                         value="{{optional($view)->Student_contact}}" required="">
+                                     <input  type="number" class="form-control name" wire:model="contact" name="contact"
+                                         value="{{optional($view)->Student_contact}}">
                                  </div>
 
                                  <div class="col-lg-12 lube-input mb-3">
                                      <label class="control-label mb-2 mt-2 col-sm-2 ">Address <span
                                              class="text-danger">*</span></label>
-                                     <input readonly type="text" class="form-control name" name="address"
-                                         value="{{optional($view)->Student_address}}" required="">
+                                     <input  type="text" class="form-control name" wire:model="address" name="address"
+                                         value="{{optional($view)->Student_address}}" >
                                  </div>
                                  <div class="col-lg-6 lube-input mb-3">
                                      <label class="control-label mb-2 mt-2 col-md-10 ">Qualification 1<span
                                              class="text-danger">*</span></label>
-                                     <select class="form-select" name="qualification" required="required">
+                                     <select class="form-select" wire:model="qualification1" >
                                          <!--<option  disabled></option>-->
-                                         <option value="{{optional($view)->Qualification_1}}"> {{optional($view)->Qualification_1}}</option>
+                                         <option value=""> -- School Level --</option>
+
+                                         <option value="Matric">
+                                             Matric </option>
+         
+                                         <option value="O-Level">
+                                             O-Level </option>
+         
+                                         <option value="Other">
+                                             Other </option>
                                      </select>
                                  </div>
                                  <div class="col-lg-6 lube-input mb-3">
                                      <label class="control-label mb-2 mt-2 col-md-6 ">Grade 1 </label>
-                                     <input readonly type="text" class="form-control name" name="grade_1"
-                                         value="{{optional($view)->Grade_1}}">
+                                     <input type="text" class="form-control name" wire:model="grade1" name="grade_1">
                                  </div>
                                  <div class="col-lg-6 lube-input mb-3">
                                      <label class="control-label mb-2 mt-2 col-md-10 ">Qualification 2 <span
                                              class="text-danger">*</span></label>
-                                     <select class="form-select" name="qualification_2">
-                                         <option value="{{optional($view)->Qualification_2}}">{{optional($view)->Qualification_2}}</option>
+                                     <select class="form-select" wire:model="qualification2">
+                                        <option value=""> -- College Level --</option>
+                                        <option value="Inter">
+                                            Inter </option>
+                                        <option value="A-Level">
+                                            A-Level </option>
+                                        <option value="IB">
+                                            IB </option>
+                                        <option value="AP">
+                                            AP </option>
+                                        <option value="Other">
+                                            Other </option>
+                                        <option value="none">
+                                            none </option>
                                      </select>
                                  </div>
                                  <div class="col-lg-6 lube-input mb-3">
                                      <label class="control-label mb-2 mt-2 col-md-6 ">Grade 2 </label>
-                                     <input readonly type="text" class="form-control name" name="grade_2"
-                                         value="{{optional($view)->Grade_2}}">
+                                     <input type="text" class="form-control name" wire:model="grade2">
                                  </div>
                                  <div class="col-lg-6 lube-input mb-3">
                                      <label class="control-label mb-2 mt-2 col-md-10 ">Qualification 3 </label>
-                                     <select class="form-select" name="qualification_3" required="required">
-                                         <option value="{{optional($view)->Qualification_3}}">{{optional($view)->Qualification_3}}</option>
+                                     <select class="form-select" wire:model="qualification3" >
+                                        <option value=""> -- University Level --</option>
+                                <option value="B.Com">
+                                    B.Com </option>
+                                <option value="BA">
+                                    BA </option>
+                                <option value="3 Year Bachelors">
+                                    3 Year Bachelors </option>
+                                <option value="4 Year Bachelors">
+                                    4 Year Bachelors </option>
+                                <option value="Master">
+                                    Master </option>
+                                <option value="Other">
+                                    Other </option>
+                                <option value="none">
+                                    none </option>
                                      </select>
                                  </div>
                                  <div class="col-lg-6 lube-input mb-3">
                                      <label class="control-label mb-2 mt-2 col-sm-6 ">Grade 3 </label>
-                                     <input readonly type="text" class="form-control name" name="grade_3"
-                                         value="{{optional($view)->Grade_3}}">
+                                     <input  type="text" class="form-control name" wire:model="grade3">
                                  </div>
                                  <div class="col-lg-6 lube-input mb-3">
                                      <label class="control-label mb-2 mt-2 col-sm-10 ">Education Country <span
                                              class="text-danger">*</span></label>
-                                     <select class="form-select" name="country_id" required="">
-                                         <option value="{{optional($view)->Education_country}}">
-                                            {{optional($view)->Education_country}} </option>
+                                     <select class="form-select" wire:model="education_country" >
+                                        @foreach ($coun as $item)
+                                        <option value="{{$item->country}}">
+                                            {{$item->country}} </option>
+                                            @endforeach
                                      </select>
                                  </div>
                                  <div class="col-lg-6 mb-3">
                                      <label class="control-label mb-2 mt-2 col-sm-10 ">Interested Country <span
                                              class="text-danger">*</span></label>
-                                     <select class="form-select">
-                                         <option value="{{optional($view)->Interested_Country}}" selected>
-                                            {{optional($view)->Interested_Country}}</option>
-                                         
-                                     </select>
+                                     <input type="text" class="form-select" wire:model="interested_country">
+                                       
                                  </div>
                                  <div class="col-lg-6 lube-input mb-3">
                                      <label class="control-label mb-2 mt-2 col-sm-10 "> Session Looking <span
                                              class="text-danger">*</span></label>
-                                     <select class="form-select" name="session" required="">
-                                         <option value="{{optional($view)->Session_Looking}}" selected="">{{optional($view)->Session_Looking}}
-                                     </select>
+                                     <select class="form-select" wire:model="session_looking" >
+                                        @foreach ($sessions as $item)
+                                        <option value="{{$item->session}}" selected="">
+                                            {{$item->session}}</option>
+                                            @endforeach
+                                        </select>
                                  </div>
                                  <div class="col-lg-6 lube-input mb-3">
                                      <label class="control-label mb-2 mt-2 col-sm-6 ">Year <span
                                              class="text-danger">*</span>
                                      </label>
-                                     <input readonly type="text" class="form-control name" name="year" value="{{optional($view)->Year}}"
-                                         required="">
+                                     <input type="text" class="form-control name" wire:model="year">
                                  </div>
                                  <div class="col-lg-6 lube-input mb-3">
                                      <label class="control-label mb-2 mt-2 col-sm-2 ">Courses<span
                                              class="text-danger">*</span></label>
-                                     <input readonly type="text" class="form-control name" name="course"
-                                         value="{{optional($view)->Courses}}" required="">
+                                     <input type="text" class="form-control name" wire:model="courses">
                                  </div>
                                  <div class="col-lg-6 lube-input mb-3">
                                      <label class="control-label mb-2 mt-2 col-sm-5 col-md-12">IELTS/TOEFL/SAT1/2
                                          GRE/ GMAT
                                          Score
                                      </label>
-                                     <input readonly type="text" class="form-control name" name="score" value="{{optional($view)->Courses_name}}">
+                                     <input  type="text" class="form-control name" wire:model="course_name">
                                  </div>
                                  <div class="col-lg-12 lube-input mb-3">
                                      <label class="control-label mb-2 mt-2 col-sm-3 col-md-8">How you know about AS
                                          EDUCATION
                                          <span class="text-danger">*</span>
                                      </label>
-                                     <input readonly type="text" class="form-control name" name="ref" value="{{optional($view)->Refferene}}"
-                                         required="">
+                                     <select type="text" class="form-control name" wire:model="reference">
+                                         @foreach ($refer as $item)
+                                         <option value="{{$item->reference}}">
+                                             {{$item->reference}}</option>
+                                             @endforeach
+                                            </select>
                                  </div>
                              </div>
                          </div>
                      </div>
                      <div class="modal-footer">
                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                         <!-- <button type="button" class="btn btn-primary">Save</button> -->
+                         <button type="button" class="btn btn-primary" wire:click="updateregistrationform()">Save</button>
                      </div>
                  </form>
              </div>
