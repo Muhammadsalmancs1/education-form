@@ -3,10 +3,11 @@
 namespace App\Http\Livewire\Registration;
 
 use App\Models\registerformmodel;
-use App\Models\registration\followcomments;
 use App\Models\registration\countrymodel;
+use App\Models\registration\followcomments;
 use App\Models\registration\referencemodel;
 use App\Models\registration\sessionmodel;
+use App\Models\registration\universitylistmodel;
 use App\Models\usermanage\manageusermodel;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -30,6 +31,10 @@ class Studentmanagment extends Component
 //  follow up
     public $followrecord;
 
+// uni list
+    public $uniid;
+    public $unidata;
+
 // edit registration form
     public $itemid;
     public $name;
@@ -50,12 +55,23 @@ class Studentmanagment extends Component
     public $course_name;
     public $reference;
 
+    // uni listing
+
+    public $studentid;
+
     public $follows = [
         ['followup' => '', 'comment' => ''],
+    ];
+    public $unilisting = [
+        ['universityrecordid' => '', 'universityname' => '', 'applied_date' => '', 'offer_status' => '', 'fee' => '', 'cas' => '', 'visa' => '', 'agent' => '', 'deposit' => '', 'medical' => '', 'action' => ''],
     ];
     protected $followRules = [
         'follows.*.followup' => 'required',
         'follows.*.comment' => 'required',
+    ];
+    protected $unilistRules = [
+        'unilisting.*.universityname' => 'required',
+        'unilisting.*.applied_date' => 'required', 'unilisting.*.offer_status' => 'required', 'unilisting.*.fee' => 'required', 'unilisting.*.cas' => 'required', 'unilisting.*.visa' => 'required', 'unilisting.*.agent' => 'required', 'unilisting.*.deposit' => 'required', 'unilisting.*.medical' => 'required', 'unilisting.*.action' => 'required',
     ];
 
     public function view($id)
@@ -112,6 +128,11 @@ class Studentmanagment extends Component
             'timer' => 2000,
         ]);
 
+    }
+
+    public function closemodeledit()
+    {
+        $this->reset('itemid', 'name', 'email', 'contact', 'address', 'qualification1', 'grade1', 'qualification2', 'grade2', 'qualification3', 'grade3', 'education_country', 'interested_country', 'session_looking', 'year', 'courses', 'course_name', 'reference');
     }
 
     // delete record
@@ -227,6 +248,78 @@ class Studentmanagment extends Component
         $this->dispatchBrowserEvent('close-model');
     }
 
+    // uni listing
+
+    public function uni_list($studentid)
+    {
+        $this->studentid = $studentid;
+        $get = registerformmodel::find($studentid);
+        $this->unidata = $get;
+        $universitylist_data = universitylistmodel::where('student_id', $studentid)->get();
+if($universitylist_data){
+        $uni_data_listing = [];
+        foreach ($universitylist_data as $item) {
+            $uni_data_listing[] = ['universityrecordid' => $item['id'], 'universityname' => $item['universityname'], 'applied_date' => $item['applied_date'], 'offer_status' => $item['offerstatus'], 'fee' => $item['fee'], 'cas' => $item['cas'], 'visa' => $item['visa'], 'agent' => $item['agent'], 'deposit' => $item['deposit'], 'medical' => $item['medical'], 'action' => $item['action']];
+        }
+        $this->unilisting = $uni_data_listing;
+    }else{
+        
+    }
+    }
+
+    public function addunilist()
+    {
+        array_push($this->unilisting, ['universityname' => '', 'applied_date' => '', 'offer_status' => '', 'fee' => '', 'cas' => '', 'visa' => '', 'agent' => '', 'deposit' => '', 'medical' => '', 'action' => '']);
+    }
+
+    public function storeuni($studentid)
+    {
+        $validatedData = $this->validate($this->unilistRules);
+        $unilist = [];
+        foreach ($this->unilisting as $item) {
+            $unilist[] = ['id' => $item['universityrecordid'] ?? null, 'universityname' => $item['universityname'], 'applied_date' => $item['applied_date'], 'offerstatus' => $item['offer_status'], 'fee' => $item['fee'], 'cas' => $item['cas'], 'visa' => $item['visa'], 'agent' => $item['agent'], 'deposit' => $item['deposit'], 'medical' => $item['medical'], 'action' => $item['action']];
+        }
+        $unilistData = [];
+        foreach ($unilist as $universitydata) {
+            $unilistData[] = array_merge(['student_id' => $studentid], $universitydata);
+        }
+        if (isset($unilistData[0]['id'])) {
+            Universitylistmodel::upsert($unilistData, ['id']);
+            $this->dispatchBrowserEvent('close-unilistmodel');
+
+            $this->dispatchBrowserEvent('swal', [
+                'position' => 'center-center',
+                'icon' => 'success',
+                'title' => 'University Updated Successfully',
+                'showConfirmButton' => false,
+                'timer' => 2000,
+            ]);
+        } else {
+            universitylistmodel::insert($unilistData);
+            $this->dispatchBrowserEvent('close-unilistmodel');
+
+            $this->dispatchBrowserEvent('swal', [
+                'position' => 'center-center',
+                'icon' => 'success',
+                'title' => 'University Add Successfully',
+                'showConfirmButton' => false,
+                'timer' => 2000,
+            ]);
+        }
+
+        $this->reset('unilisting');
+    }
+
+    public function deleteunirecord($recordid){
+      $delete = universitylistmodel::find($recordid)->delete();
+      $this->uni_list($this->studentid);
+    }
+    public function indexremove($indexid){
+        unset($this->unilisting[$indexid]);
+        $this->indexid = array_values($this->unilisting);
+        }
+    
+
     public function render()
     {
         $query = registerformmodel::query();
@@ -272,11 +365,12 @@ class Studentmanagment extends Component
         $session = sessionmodel::get();
         $counselor = manageusermodel::where('role', 'Counselor')->get();
         $followuprecord = $this->followrecord;
+        $studentdata = $this->unidata;
 
-        $coun = countrymodel::orderBy('id','Desc')->get();
-        $refer = referencemodel::orderBy('id','Desc')->get();
-        $sessions = sessionmodel::orderBy('id','Desc')->get();
-        return view('livewire.registration.studentmanagment', compact('show', 'referal', 'session', 'counselor', 'followuprecord','coun','refer','sessions'));
+        $coun = countrymodel::orderBy('id', 'Desc')->get();
+        $refer = referencemodel::orderBy('id', 'Desc')->get();
+        $sessions = sessionmodel::orderBy('id', 'Desc')->get();
+        return view('livewire.registration.studentmanagment', compact('show', 'referal', 'session', 'counselor', 'followuprecord', 'coun', 'refer', 'sessions', 'studentdata'));
     }
 
 }

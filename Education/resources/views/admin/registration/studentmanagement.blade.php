@@ -25,5 +25,10 @@
   $('#view').modal('hide');
 
 });
+window.addEventListener('close-unilistmodel', event => {
+  
+  $('#action-uni').modal('hide');
+
+});
 </script>
 @endsection

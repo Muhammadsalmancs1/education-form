@@ -144,10 +144,10 @@
 
                                 <td class="text-center">
                                     <button type="button" data-bs-toggle="modal"
-                                        data-bs-target="#uni-view"
+                                        data-bs-target="#action-uni"
                                         class="btn btn-primary btn-xs me-2 view-btn" title="View"
-                                        data-toggle="tooltip">
-                                        View
+                                        data-toggle="tooltip" wire:click="uni_list({{$item->id}})">
+                                        Action
                                     </button>
                                 </td>
                                 <td class="text-center">
@@ -213,7 +213,7 @@
              <div class="modal-content ">
                  <div class="modal-header modal-header-style">
                      <h5 class="modal-title mb-3 text-white " id="staticBackdropLabel">Student Registration</h5>
-                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                     <button type="button" class="btn-close" data-bs-dismiss="modal" wire:click="closemodeledit" aria-label="Close"></button>
                  </div>
                  <form action="" wire:submit.prevent="updateregistrationform()">
                      <div class="modal-body">
@@ -372,7 +372,7 @@
                          </div>
                      </div>
                      <div class="modal-footer">
-                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" wire:click="closemodeledit">Close</button>
                          <button type="button" class="btn btn-primary" wire:click="updateregistrationform()">Save</button>
                      </div>
                  </form>
@@ -476,6 +476,322 @@
     </div>
 </div>
 
+        <!--Action uni Modal -->
+        <div class="modal fade" id="action-uni" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true" wire:ignore.self>
+            <div class="modal-dialog modal-fullscreen modal-fullscreen2">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-style">
+                        <h5 class="modal-title mb-3 text-white" id="staticBackdropLabel">Student Process </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="" wire:submit.prevent="storeuni({{@$studentdata->id}})">
+                       
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-lg-3 mb-3">
+                                        <label class="control-label col-sm-2 ">Session</label>
+                                        <input type="text" class="form-control name" name="name" value="{{optional($studentdata)->Session_Looking}}" readonly="">
+                                    </div>
+                                    <div class="col-lg-3 mb-3">
+                                        <label class="control-label col-sm-2 ">Name</label>
+                                        <input type="text" class="form-control name" name="name"
+                                        value="{{optional($studentdata)->Student_name}}" placeholder="Enter name" readonly="">
+                                      
+                                      
+                                    </div>
+
+                                    <div class="col-lg-3 mb-3">
+                                        <label class="control-label col-sm-10 ">Interested Country *</label>
+                                        <input type="text" class="form-control name" name="email" value="{{optional($studentdata)->Interested_Country}}"
+                                            placeholder="  " readonly="">
+
+                                    </div>
+                                    <div class="col-lg-3 mb-3">
+                                        <label class="control-label col-sm-3 col-md-7">Email Address</label>
+                                        <input type="email" class="form-control name" name="email" value="{{optional($studentdata)->Student_email}}"
+                                            placeholder="  " readonly="">
+                                    </div>
+
+                                    <div class="col-lg-3 mb-3">
+                                        <label class="control-label col-sm-3 col-md-6">Contact# </label>
+                                        <input type="text" class="form-control name" name="contact"
+                                            placeholder="Enter contact #" value="{{optional($studentdata)->Student_contact}}" readonly="">
+                                    </div>
+                                    <div class="col-lg-9 mb-3">
+                                        <label class="control-label col-sm-5 ">Address</label>
+                                        <input type="text" class="form-control name" name="address"
+                                        value="{{optional($studentdata)->Student_address}}"
+                                            placeholder="Enter address" readonly="">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 mb-3 mt-4">
+                                        <div class="comment-div">
+                                            Universties
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="add-more-uni-div">
+                                    @foreach($unilisting as $index => $universities) 
+                                    <input type="hidden" wire:model="unilisting.{{$index}}.universityrecordid">
+                                    <div class="row ">
+                                        <div class="col-lg-12 add-more-uniview-row2">
+                                            <div class="add-more-uni-row2 position-relative mb-3">
+                                                @if (@$unilisting[$index]['universityrecordid'])
+        <div class="delete-uni2" wire:click="deleteunirecord('{{ @$unilisting[$index]['universityrecordid'] }}')">
+            <i class="bi bi-trash-fill text-danger"></i>
+        </div>
+    @else
+        <div class="delete-uni2" wire:click="indexremove({{ $index }})">
+            <i class="bi bi-trash-fill text-danger"></i>
+        </div>@endif
+                                             
+                                               
+                                                <div class="row">
+
+                                                    <div class="col-lg-2 mb-3">
+                                                        <label class="control-label col-sm-5 ">Uni Name</label>
+                                                        <input type="text" class="form-control name" value=""
+                                                            placeholder="Enter Name" wire:model="unilisting.{{$index}}.universityname">
+                                                            @error('unilisting'.$index.'universityname') 
+                                                            <span class="error">{{ $message }}</span> 
+                                                        @enderror
+                                                    </div>
+
+                                                    <div class="col-lg-2 mb-3">
+                                                        <label class="control-label col-sm-5 ">Applied&nbsp;Date</label>
+                                                        <input type="date" class="form-control name" value=""
+                                                            placeholder="Enter Date" wire:model="unilisting.{{$index}}.applied_date">
+                                                            @error('unilisting'.$index.'applied_date') 
+                                                            <span class="error">{{ $message }}</span> 
+                                                        @enderror
+                                                    </div>
+
+                                                    <div class="col-lg-2 mb-3">
+                                                        <label class="control-label col-sm-5 ">Offer&nbsp;Status</label>
+                                                        <select class="form-select" id="pro" wire:model="unilisting.{{$index}}.offer_status">
+                                                            <option value="">
+                                                                -Select- </option>
+                                                            <option value="Issued">
+                                                                Issued </option>
+
+
+                                                            <option value="Rejected">
+                                                                Rejected </option>
+
+
+                                                            <option value="Pending">
+                                                                Pending </option>
+
+
+                                                            <option value="Awaited">
+                                                                Awaited </option>
+
+
+                                                        </select>
+                                                    </div>
+
+
+                                                    <div class="col-lg-2 mb-3">
+                                                        <label class="control-label col-sm-5 ">Enter Fee</label>
+                                                        <input type="text" class="form-control name" value=""
+                                                            placeholder="Enter Name" wire:model="unilisting.{{$index}}.fee">
+                                                    </div>
+
+                                                    <div class="col-lg-2 mb-3">
+                                                        <label class="control-label col-sm-5 ">Cas/I20/COE </label>
+                                                        <select class="form-select" wire:model="unilisting.{{$index}}.cas">
+                                                            <option value="">
+                                                                -Select- </option>
+                                                            <option value="Issued">
+                                                                Issued </option>
+                                                            <option value="Awaited">
+                                                                Awaited </option>
+                                                            <option value="Rejected">
+                                                                Rejected </option>
+
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-lg-2 mb-3">
+                                                        <label class="control-label col-sm-5 ">Visa Issue </label>
+                                                        <select class="form-select" wire:model="unilisting.{{$index}}.visa">
+                                                            <option value="">
+                                                                -Select- </option>
+                                                            <option value="Yes">
+                                                                Yes </option>
+                                                            <option value="No">
+                                                                No </option>
+                                                            <option value="Online enrolled">
+                                                                Online enrolled </option>
+
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-lg-6 mb-3">
+                                                        <label class="control-label col-sm-5 ">Agent</label>
+                                                        <select class="form-select" id="pro" wire:model="unilisting.{{$index}}.agent">
+                                                            <option value="">
+                                                                -Select- </option>
+                                                            <option value="AS EDUCATION SERVICE">
+                                                                AS EDUCATION SERVICE </option>
+
+
+                                                            <option value="EDUCATION RESOURCE NETWORK">
+                                                                EDUCATION RESOURCE NETWORK </option>
+
+
+                                                            <option value="INDEX">
+                                                                INDEX </option>
+
+
+                                                            <option value="MR CONSULTANTS">
+                                                                MR CONSULTANTS </option>
+
+
+                                                            <option value="EDIFY CONSULTING">
+                                                                EDIFY CONSULTING </option>
+
+
+                                                            <option value="HS CONSULTANTS">
+                                                                HS CONSULTANTS </option>
+
+
+                                                            <option value="FALCON CONSULTANT">
+                                                                FALCON CONSULTANT </option>
+
+
+                                                            <option value="MA CONSULTANTS">
+                                                                MA CONSULTANTS </option>
+
+
+                                                            <option value="D EDUCATIONIST">
+                                                                D EDUCATIONIST </option>
+
+
+                                                            <option value="SUCCESS FACTOR">
+                                                                SUCCESS FACTOR </option>
+
+
+                                                            <option value="13">
+                                                                QnA CONSULTANTS </option>
+
+
+                                                            <option value="14">
+                                                                REAL MENTORS </option>
+
+
+                                                            <option value="15">
+                                                                FM CONSULTANTS </option>
+
+
+                                                            <option value="16">
+                                                                HR CONSULTANTS </option>
+
+
+                                                            <option value="17">
+                                                                NASEEM KHAN </option>
+
+
+                                                            <option value="18">
+                                                                FES CONSULTANTS </option>
+
+
+                                                            <option value="19">
+                                                                ICC </option>
+
+
+                                                            <option value="20">
+                                                                Upskill Consultants </option>
+
+
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-lg-2 mb-3">
+                                                        <label class="control-label col-sm-5 ">Deposit</label>
+                                                        <div class="d-flex mt-2">
+
+                                                            <div class="form-check me-2 ">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="deposit2.{{$index}}" id="" wire:model="unilisting.{{$index}}.deposit" />
+                                                                <label class="form-check-label" for=""> Yes </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="deposit2.{{$index}}" id=""  />
+                                                                <label class="form-check-label" for="" wire:model="unilisting.{{$index}}.deposit">
+                                                                    No
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2 mb-3">
+                                                        <label class="control-label col-sm-5 ">Medical </label>
+                                                        <div class="d-flex mt-2">
+
+                                                            <div class="form-check me-2 ">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="medical2.{{$index}}" id="" wire:model="unilisting.{{$index}}.medical" />
+                                                                <label class="form-check-label" for=""> Yes </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="medical2.{{$index}}" id="" />
+                                                                <label class="form-check-label" for="" wire:model="unilisting.{{$index}}.medical">
+                                                                    No
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2 mb-3">
+                                                        <label class="control-label col-sm-5 ">Action</label>
+                                                        <div class="d-flex mt-2">
+
+                                                            <div class="form-check me-2 ">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="action2.{{$index}}" id="" wire:model="unilisting.{{$index}}.action"/>
+                                                                <label class="form-check-label" for=""> Yes </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="action2.{{$index}}" id="" wire:model="unilisting.{{$index}}.action"/>
+                                                                <label class="form-check-label" for="">
+                                                                    No
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            
+                                            </div>
+
+                                          
+                                        </div>
+                                    </div>
+                                    @endforeach
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 mb-3 d-flex justify-content-end">
+                                    <button type="button" class="btn btn-primary add-more-uni-view2" wire:click="addunilist">Add
+                                        University</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success w-50 mx-auto" wire:click="storeuni({{optional($studentdata)->id}})">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
 </div>
 
