@@ -7,7 +7,9 @@ use App\Models\registration\countrymodel;
 use App\Models\registration\followcomments;
 use App\Models\registration\referencemodel;
 use App\Models\registration\sessionmodel;
+use App\Models\registration\agentmodel;
 use App\Models\registration\universitylistmodel;
+use App\Models\registration\universitymodel;
 use App\Models\usermanage\manageusermodel;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -58,6 +60,8 @@ class Studentmanagment extends Component
     // uni listing
 
     public $studentid;
+
+    public $activeTab = '';
 
     public $follows = [
         ['followup' => '', 'comment' => ''],
@@ -185,6 +189,7 @@ class Studentmanagment extends Component
     public function search($search)
     {
         $this->search = $search;
+        $this->activeTab = $search;
     }
 
     // status update
@@ -370,7 +375,10 @@ if($universitylist_data){
         $coun = countrymodel::orderBy('id', 'Desc')->get();
         $refer = referencemodel::orderBy('id', 'Desc')->get();
         $sessions = sessionmodel::orderBy('id', 'Desc')->get();
-        return view('livewire.registration.studentmanagment', compact('show', 'referal', 'session', 'counselor', 'followuprecord', 'coun', 'refer', 'sessions', 'studentdata'));
+        $uni_agents = agentmodel::orderBy('id', 'Desc')->get();
+        $uni = universitymodel::orderBy('id', 'Desc')->get();
+
+        return view('livewire.registration.studentmanagment', compact('show', 'referal', 'session', 'counselor', 'followuprecord', 'coun', 'refer', 'sessions', 'studentdata','uni_agents','uni'));
     }
 
 }

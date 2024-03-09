@@ -2,7 +2,7 @@
     <div>
    
         <div class="card  pb-4 px-lg-4 px-2">
-            <div>
+            <div class="mt-3">
             <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
                 class="edit-data py-2 mt-3">Add Roles</button></div>
             <h5 class="card-header px-0 bg-white border-bottom-0  py-3 mb-2 ">Users Roles</h5>
@@ -102,11 +102,18 @@
 
     <div class="modal fade" id="access" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true" wire:ignore.self>
-    <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered" style="height: auto;">
         <div class="modal-content ">
             <div class="modal-header modal-header-style">
                 <h5 class="modal-title mb-3 text-white " id="staticBackdropLabel">Acess Control</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="my-4 mx-4">
+              @foreach ($datalistingpermission as $item)
+              
+              <span class=" mx-2 my-3 py-2" > {{$item->name}}  <button type="button" class="btn-close px-2" style="font-size:12px;" wire:click="removepermission({{ $item->id }})" ></button></span>
+                  
+              @endforeach
             </div>
             <form action="" wire:submit="Assignpermissions" wire:ignore.self>
                 <div class="modal-body">
@@ -143,13 +150,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div>
-                              @foreach ($datalistingpermission as $item)
-                              
-                              <span class=" mx-2 my-3 py-2" > {{$item->name}}  <button type="button" class="btn-close px-2" style="font-size:12px;" wire:click="removepermission({{ $item->id }})" ></button></span>
-                                  
-                              @endforeach
-                            </div>
+                           
                         </div>
                     </div>
                 </div>

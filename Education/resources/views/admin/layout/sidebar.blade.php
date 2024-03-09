@@ -93,7 +93,8 @@
         <!-- Transection -->
         <li class="menu-item ">
             <a href="javascript:void(0)" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-copy"></i>
+                <i class="menu-icon tf-icons bx bx-transfer"></i>
+
                 <div data-i18n="Extended UI">Transection</div>
             </a>
             <ul class="menu-sub">
@@ -127,7 +128,8 @@
         <!-- User Managementn -->
         <li class="menu-item ">
             <a href="javascript:void(0)" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-copy"></i>
+                <i class="menu-icon tf-icons bx bx-user"></i>
+
                 <div data-i18n="Extended UI">User Management</div>
             </a>
             <ul class="menu-sub">
