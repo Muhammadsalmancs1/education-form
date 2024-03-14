@@ -31,8 +31,8 @@
                             <select class="form-select" wire:model="search_session">
                                 <option>Select Session </option>
                                 @foreach ($session as $item)
-                                    <option value="{{ $item->session }}">
-                                        {{ $item->session }} </option>
+                                    <option value="{{trim($item->session)}}">
+                                        {{$item->session}} </option>
                                 @endforeach
                             </select>
 
@@ -44,7 +44,7 @@
                             <select class="form-select" wire:model="search_counselor">
                                 <option>Select Counselor </option>
                                 @foreach ($counselor as $item)
-                                    <option value="{{ $item->name }}">
+                                    <option value="{{ trim($item->name) }}">
                                         {{ $item->name }} </option>
                                 @endforeach
 
@@ -56,7 +56,7 @@
                             <select class="form-select" wire:model="search_ref">
                                 <option>Select Ref </option>
                                 @foreach ($referal as $item)
-                                    <option value="{{ $item->reference }}">
+                                    <option value="{{trim($item->reference) }}">
                                         {{ $item->reference }} </option>
                                 @endforeach
 
@@ -122,6 +122,8 @@
                                                 wire:model="statusChanges.{{ $item->id }}">
                                                 <!--<option  disabled></option>-->
                                                 <option value="{{ $item->Status }}">{{ $item->Status }}</option>
+                                                <option value="Inquiry">
+                                                    Inquiry </option>
                                                 <option value="In Progress">
                                                     In Progress </option>
                                                 <option value="Cas/T20" selected="">
@@ -133,8 +135,7 @@
                                                 <option value="Paid">
                                                     Paid Student
                                                 </option>
-                                                <option value="Wasted" selected="">
-                                                    Wasted</option>
+                                               
 
 
                                             </select>
@@ -152,7 +153,7 @@
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#action-uni"
                                         class="btn btn-primary btn-xs me-2 view-btn" title="View"
                                         data-toggle="tooltip" wire:click="uni_list({{ $item->id }})">
-                                        Action
+                                       @if($item->unilist)View @else Action @endif
                                     </button>
                                 </td>
                                 <td class="text-center">
@@ -165,13 +166,23 @@
                                     </button>
 
                                 </td>
-                                <td class="text-center"> <button type="button"
-                                        class="btn btn-primary btn-xs edit-btn" data-bs-toggle="modal"
-                                        data-bs-target="#followUp" title="FollowUp" data-toggle="tooltip"
+                                <td class="text-center"> <button type="button"class="btn btn-primary btn-xs edit-btn toolpit-btn" data-bs-toggle="modal" data-bs-target="#followUp" title="FollowUp" data-toggle="tooltip"
                                         wire:click="followup({{ $item->id }})">
                                         FollowUp
+                                        @if($item->followuplists)
+                                        <div class="toolpit-div">
+                                            <div class="toolpit-text">
+                                                <div class="arrow-down"></div>
+                                                <h3>{{$item->followuplists->followup}}</h3>
+                                                <p>{{$item->followuplists->comment}}</p>
+                                            </div>
+                                        </div>
+                                        @else
+                                        @endif
                                     </button>
+                                    
                                 </td>
+                
                                 <td>
                                     <button type="button" class="btn btn-danger btn-xs edit-btn"
                                         data-bs-toggle="modal" data-bs-target="#delete"
@@ -331,6 +342,7 @@
                                 <label class="control-label mb-2 mt-2 col-sm-10 ">Interested Country <span
                                         class="text-danger">*</span></label>
                                 <input type="text" class="form-select" wire:model="interested_country">
+                                
 
                             </div>
                             <div class="col-lg-6 lube-input mb-3">
@@ -395,9 +407,10 @@
         <div class="modal-content " style="max-height: fit-content !important">
             <div class="modal-header modal-header-style">
                 <h5 class="modal-title mb-3 text-white" id="staticBackdropLabel">Student Follow Up </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" wire:click="closefollowup" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="" wire.ignore.self wire:submit.prevent="followupform({{ @$followuprecord->id }})">
+                <input type="hidden" wire:model='followupcommentid'>
                 <div class="modal-body h-auto">
                     <div class="container ">
                         <div class="row">

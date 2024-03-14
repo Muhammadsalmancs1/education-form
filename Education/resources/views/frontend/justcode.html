@@ -1,0 +1,23 @@
+@foreach ($time as $item)
+@if ($item->booktime !== null)
+    @php
+        $showWelcome = false;
+        foreach ($item->booktime as $assigntime) {
+            if ($assigntime->Status == 'Pending') {
+                $showWelcome = true;
+                break;
+            }
+        }
+    @endphp
+    @if ($showWelcome)
+    <button type="button" class="me-2 main-btn2 mb-3" style="text-decoration:line-through;" value="" disabled> {{ date('h:i A', strtotime($item->start_time)) }} - {{ date('h:i A', strtotime($item->end_time)) }}</button>
+    @else
+
+    <button type="button" class="me-2 main-btn2 mb-3" value="{{ date('h:i A', strtotime($item->start_time)) }} - {{ date('h:i A', strtotime($item->end_time)) }},{{$item->id}}" onclick="addValueToForm('{{ date('h:i A', strtotime($item->start_time)) }} - {{ date('h:i A', strtotime($item->end_time)) }}', '{{$item->id}}')">
+        {{ date('h:i A', strtotime($item->start_time)) }} - {{ date('h:i A', strtotime($item->end_time)) }}
+    </button>
+    
+    
+    @endif
+    @endif
+@endforeach

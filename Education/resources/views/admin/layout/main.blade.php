@@ -8,7 +8,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Student Management</title>
+    <title>Education Consultents</title>
 
     <meta name="description" content="" />
 
@@ -38,6 +38,9 @@
     <!-- Helpers -->
     <script src="{{asset('../admin/assets/vendor/js/helpers.js')}}"></script>
     <script src="{{asset('../admin/assets/js/config.js')}}"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+   
     <!-- Add this to your main layout or component -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     @livewireStyles
@@ -94,6 +97,15 @@
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
         <script src="{{asset('./admin/assets/Js/table.js')}}"></script>
+        <script>
+            $("#view").on("shown.bs.modal", function () {
+                $('#select2').select2({
+                    dropdownParent: $('#view .modal-content form .modal-body .container .row .col-lg-6')
+                });
+                // $.fn.modal.Constructor.prototype.enforceFocus = function() {};
+            })
+
+        </script>
         <script>
             // new DataTable('#new-lead');
             $(document).ready(function () {
@@ -177,6 +189,21 @@
         Swal.fire(swalConfig).then((willDelete) => {
             if (willDelete.isConfirmed) {
                 window.livewire.emit('destroy', e.detail.item_id);
+            }
+        });
+    });
+    window.addEventListener('swal:timedelete', function (e) {
+        const swalConfig = {
+            position: e.detail.position,
+            icon: e.detail.icon,
+            title: e.detail.title,
+            showConfirmButton: e.detail.showConfirmButton,
+            timer: e.detail.timer,
+        };
+
+        Swal.fire(swalConfig).then((willDelete) => {
+            if (willDelete.isConfirmed) {
+                window.livewire.emit('confirmdestroy', e.detail.item_id);
             }
         });
     });

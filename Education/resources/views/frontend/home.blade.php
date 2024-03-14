@@ -5,7 +5,7 @@
 <nav class="navbar" style="background-color: #cd2122;">
     <div class="container-fluid w-100">
         <a class="navbar-brand d-flex justify-content-center align-items-center w-100 flex-md-row flex-column"
-            href="home.html">
+            href="{{route('home')}}">
             <img src="{{asset('website/assets/images/logo.png')}}" alt="" class="logo-img me-3">
             <h1 class="text-white mt-lg-0 mt-3">Student Registration Form</h1>
         </a>
@@ -36,29 +36,9 @@
 
                     <h1 class="top-heading">Select Time</h1>
                     <br>
-                    <div class="d-flex justify-content-center flex-wrap my-lg-5 my-4">
-                        @foreach ($time as $item)
-                        @if ($item->booktime !== null)
-                            @php
-                                $showWelcome = false;
-                                foreach ($item->booktime as $assigntime) {
-                                    if ($assigntime->Status == 'Pending') {
-                                        $showWelcome = true;
-                                        break;
-                                    }
-                                }
-                            @endphp
-                            @if ($showWelcome)
-                            <button type="button" class="me-2 main-btn2 mb-3" style="text-decoration:line-through;" value="" disabled>{{ date('H:i', strtotime($item->start_time)) }} - {{ date('H:i', strtotime($item->end_time)) }}</button>
-                            @else
-                    
-                            <button type="button" class="me-2 main-btn2 mb-3" value="{{ date('H:i', strtotime($item->start_time)) }} - {{ date('H:i', strtotime($item->end_time)) }},{{$item->id}}" onclick="addValueToForm('{{ date('H:i', strtotime($item->start_time)) }} - {{ date('H:i', strtotime($item->end_time)) }}', '{{$item->id}}')">{{ date('H:i', strtotime($item->start_time)) }} - {{ date('H:i', strtotime($item->end_time)) }}</button>
-                            
-                            @endif
-                            @endif
-                        @endforeach
-                    <input type="hidden" id="timeInput" name="time" />
-                    <input type="hidden" id="timeid" name="timeid" />
+                    <div class="d-flex justify-content-center flex-wrap my-lg-5 my-4" id="timesection">
+                      
+                  
                     </div>
                     <h1 class="top-heading mb-4">Select Meeting Type</h1>
                     <div class="row justify-content-center ">
@@ -482,6 +462,12 @@
 function addValueToForm(button, id) {
     var timeInput = document.getElementById("timeInput");
     var timeid = document.getElementById("timeid");
+
+    if (!timeInput || !timeid) {
+        console.error("Element with ID 'timeInput' or 'timeid' not found");
+        return;
+    }
+
     timeInput.value = button;
     timeid.value = id;
 
@@ -496,17 +482,16 @@ function addValueToForm(button, id) {
     var clickedButton = document.querySelector('button[value="' + button + ',' + id + '"]');
     
     // Check if the button is already selected
-    if (clickedButton.style.backgroundColor !== "red") {
-        // Setting the clicked button's text color to white and background color to red
-        clickedButton.style.backgroundColor = "#cd2122";
-        clickedButton.style.color = "white";
+    if (clickedButton) {
+        if (clickedButton.style.backgroundColor !== "red") {
+            // Setting the clicked button's text color to white and background color to red
+            clickedButton.style.backgroundColor = "#cd2122";
+            clickedButton.style.color = "white";
+        }
+    } else {
+        console.error("Clicked button not found");
     }
 }
-
-    $('.main-btn2').on('click', function() {
-    $('.main-btn2').removeClass('active');
-    $(this).addClass('active');
-});
 
 
    function selectdate(){
@@ -528,6 +513,29 @@ function meeting(type){
         meetingtype.value = type;
     nextPrev(1);
 }
+
+$('#date').change(function() {
+        timepicker();
+    });
+
+    function timepicker(){
+        var date = $('#date').val();
+        $.ajax({
+        type:'GET',
+      url:'updateselecttiming',
+      data: {
+              
+                'date': date
+            },
+      datatype:'json',
+      contentType: false,
+       
+      success:function(response){
+        console.log(response);
+       $('#timesection').html(response);
+      },
+      });
+    }
 </script>
 
    @endsection

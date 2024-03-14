@@ -11,4 +11,12 @@ class registerformmodel extends Model
     protected $table="registration_form";
     protected $primarykey="id";
 
+    public function unilist(){
+        return $this->hasOne('App\Models\registration\universitylistmodel','student_id','id');
+    }
+    public function followuplists(){
+        return $this->hasOne('App\Models\registration\followcomments','student_id','id')->orderBy('id', 'desc')
+        ->latest();
+    }
+
 }

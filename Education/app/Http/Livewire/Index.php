@@ -84,7 +84,7 @@ public function updateRecord($item_id)
                   ->orWhere('Date', 'like', '%'.$this->search.'%');
             });
         }
-    $students =$query->orderBy('id', 'DESC')->get();
+    $students =$query->where('status','Pending')->orderBy('id', 'DESC')->get();
         $today = Carbon::now()->toDateString();
         $new_students = registerformmodel::where('status','Pending')->whereDate('created_at', $today)->get();
         return view('livewire.index',compact('new_students','students'));

@@ -53,9 +53,42 @@ class frontendcontroller extends Controller
         Alert::success('Register', 'Your Registration Form Successful');
         return redirect()->back();
 
-
-
-
-
     }
+
+    public function updatetime(Request $request){
+        $date = \DateTime::createFromFormat('m/d/Y', $request->date)->format('Y-m-d');
+        $booktime = registerformmodel::where('Date',$date)->where('status','Pending')->get('timeid');
+        $time = bookingtimemodel::orderBy('id','DESC')->get();
+        $sametime = [];
+        $differenttime = [];
+        $timeids = $booktime->pluck('timeid')->toArray(); // Get the timeid values from the booktime collection
+        
+        $html = '';
+        if ($booktime->isEmpty()) {
+            foreach ($time as $t) {
+                $html .= '<button type="button" class="me-2 main-btn2 mb-3" value="' . date("h:i A", strtotime($t->start_time)) . ' - ' . date("h:i A", strtotime($t->end_time)) . ',' . $t->id . '" onclick="addValueToForm(\'' . date("h:i A", strtotime($t->start_time)) . ' - ' . date("h:i A", strtotime($t->end_time)) . '\', ' . $t->id . ')">' . date("h:i A", strtotime($t->start_time)) . ' - ' . date("h:i A", strtotime($t->end_time)) . '</button>';
+            }
+        } else {
+            foreach ($time as $t) {
+                $buttonDisabled = false;
+                foreach ($booktime as $bt) {
+                    if ($t->id == $bt->timeid) {
+                        $buttonDisabled = true;
+                        break;
+                    }
+                }
+        
+                if ($buttonDisabled) {
+                    $html .= '<button type="button" class="me-2 main-btn2 mb-3" style="text-decoration: line-through;" value="" disabled>' . date("h:i A", strtotime($t->start_time)) . ' - ' . date("h:i A", strtotime($t->end_time)) . '</button>';
+                } else {
+                    $html .= '<button type="button" class="me-2 main-btn2 mb-3" value="' . date("h:i A", strtotime($t->start_time)) . ' - ' . date("h:i A", strtotime($t->end_time)) . ',' . $t->id . '" onclick="addValueToForm(\'' . date("h:i A", strtotime($t->start_time)) . ' - ' . date("h:i A", strtotime($t->end_time)) . '\', ' . $t->id . ')">' . date("h:i A", strtotime($t->start_time)) . ' - ' . date("h:i A", strtotime($t->end_time)) . '</button>';
+                }
+            }
+        }
+        $html .= '<input type="hidden" id="timeInput" name="time" />
+        <input type="hidden" id="timeid" name="timeid" />';
+        echo $html;
+        
+  
+}
 }

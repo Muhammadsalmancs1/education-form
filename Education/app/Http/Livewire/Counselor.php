@@ -14,6 +14,8 @@ class Counselor extends Component
     public $item_id;
     public $search = '';
     public $updateMode = false;
+    protected $listeners = ['destroy'];
+
     protected $rules = [
         'currency' => 'required|min:2',
     ];
@@ -66,7 +68,6 @@ class Counselor extends Component
     public function confirmDelete($item_id)
     {
         $this->item_id = $item_id;
-
         $this->dispatchBrowserEvent('swal:confirm', [
             'position' => 'center',
             'icon' => 'warning',

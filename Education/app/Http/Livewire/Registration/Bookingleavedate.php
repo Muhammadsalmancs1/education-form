@@ -41,6 +41,8 @@ class Bookingleavedate extends Component
         $this->developers = array_values($this->developers);
     }
     protected $listeners = ['destroy'];
+    protected $listener = ['confirmdestroy'];
+
 
     public function bookingleavedate(){
      
@@ -73,7 +75,7 @@ class Bookingleavedate extends Component
     public function removetimeindex($index)
     {
         unset($this->time[$index]);
-        $this->index = array_values($this->time);
+        $this->time = array_values($this->time);
     }
 
     public function bookingtime(){
@@ -135,9 +137,26 @@ class Bookingleavedate extends Component
         $this->emit('refreshData');
     }
 
+
+    // time delete
+    public function timeDelete($item_id)
+    {
+        $this->item_id = $item_id;
+        $result = bookingtimemodel::find($this->item_id)->delete();
+        $this->dispatchBrowserEvent('swal', [
+            'position' => 'center-center',
+            'icon' => 'success',
+            'title' => 'Record Deleted Successfully',
+            'showConfirmButton' => false,
+            'timer' => 2000,
+        ]);
+    }
+
+
     public function render()
     {
         $show = bookingleavedate_model::orderBy('id','DESC')->paginate(10); // assuming you want to paginate the results
-        return view('livewire.registration.bookingleavedate', ['show' => $show]);
+        $listingtime = bookingtimemodel::orderBy('id','DESC')->paginate(10); 
+        return view('livewire.registration.bookingleavedate', ['show' => $show, 'listingtime' => $listingtime]);
     }
 }

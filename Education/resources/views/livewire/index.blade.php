@@ -1,4 +1,5 @@
 <div>
+    
     <div class="table-responsive">
         <table id="inquiry" class="table  nowrap border-0 " style="width:100%">
             <thead>
@@ -7,6 +8,7 @@
                     <th>#</th>
                     <th>Today Date</th>
                     <th>Time</th>
+                    <th>Meeting Type</th>
                     <th>Std Name </th>
                     <th> Number</th>
                     <th> Email</th>
@@ -19,6 +21,8 @@
                     <td class="">{{$key+1}}</td>
                     <td>{{$student->Date}}</td>
                     <td>{{$student->time}}</td>
+                    <td>{{$student->Meeting_type}}</td>
+
                     <td class="">{{$student->Student_name}}</td>
                     <td class="">{{$student->Student_contact}}</td>
                     <td class="">{{$student->Student_email}}</td>
@@ -46,10 +50,11 @@
                     <th>#</th>
                     <th> Date</th>
                     <th>Time</th>
+                    <th>Meeting Type</th>
                     <th>Std Name </th>
                     <th> Number</th>
                     <th> Email</th>
-
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,9 +63,16 @@
                     <td class="">{{$key+1}}</td>
                     <td>{{$student->Date}}</td>
                     <td>{{$student->time}}</td>
+                    <td>{{$student->Meeting_type}}</td>
                     <td class="">{{$student->Student_name}}</td>
                     <td class="">{{$student->Student_contact}}</td>
                     <td class="">{{$student->Student_email}}</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-primary btn-xs" wire:click="confirmDelete({{$student->id}})">Waste On</button>
+                            <button class="btn btn-primary btn-xs ms-2" wire:click="updateRecord({{$student->id}})">Transfer to Data</button>
+                       </div>
+                    </td>
                 </tr>
                     
                 @endforeach

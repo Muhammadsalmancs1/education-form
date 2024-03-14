@@ -230,7 +230,12 @@
                             <div class="card  pb-4 px-lg-4 px-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h5 class="card-header px-0 bg-white border-bottom-0  py-3 mb-2">Today Appointments</h5>
-                                
+                                    <div class="blushed-card mb-3">
+                                        <div class="table-responsive">
+                                            <div id='calendar' class="dashboard-table-lg"></div>
+                                        </div>
+                                    </div>
+    
                                 </div>
                                
                                 <livewire:index />

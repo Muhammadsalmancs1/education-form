@@ -3,11 +3,11 @@
 namespace App\Http\Livewire\Registration;
 
 use App\Models\registerformmodel;
+use App\Models\registration\agentmodel;
 use App\Models\registration\countrymodel;
 use App\Models\registration\followcomments;
 use App\Models\registration\referencemodel;
 use App\Models\registration\sessionmodel;
-use App\Models\registration\agentmodel;
 use App\Models\registration\universitylistmodel;
 use App\Models\registration\universitymodel;
 use App\Models\usermanage\manageusermodel;
@@ -217,10 +217,19 @@ class Studentmanagment extends Component
     {
         $find = registerformmodel::find($item_id);
         $this->followrecord = $find;
-        $latestComment = followcomments::where('student_id', $item_id)->orderBy('id', 'DESC')->latest()->first();
-        $this->follows = [
-            ['followup' => @$latestComment->followup, 'comment' => @$latestComment->comment],
-        ];
+        
+        $latestComment = followcomments::where('student_id', $item_id)->get();
+        if ($latestComment->isNotEmpty()) {
+            $commentslisting = [];
+            foreach ($latestComment as $item) {
+                $commentslisting[] = ['followupcommentid' => $item['id'], 'followup' => $item['followup'], 'comment' => $item['comment']];
+            }
+            $this->follows = $commentslisting;
+        } else {
+            $this->follows = [
+                ['followup' => '', 'comment' => ''],
+            ];
+        }
     }
 
     public function addfollows()
@@ -234,12 +243,24 @@ class Studentmanagment extends Component
         $validatedData = $this->validate($this->followRules);
         $followsup = [];
         foreach ($this->follows as $item) {
-            $followsup[] = ['followup' => $item['followup'], 'comment' => $item['comment']];
+            $followsup[] = ['id' => $item['followupcommentid'] ?? null, 'followup' => $item['followup'], 'comment' => $item['comment']];
         }
         $followcommentsData = [];
         foreach ($followsup as $follow) {
             $followcommentsData[] = array_merge(['student_id' => $studentid], $follow);
         }
+        if (array_key_exists('id', $followcommentsData[0])) {
+            followcomments::upsert($followcommentsData, ['id']);
+            $this->dispatchBrowserEvent('close-model');
+
+            $this->dispatchBrowserEvent('swal', [
+                'position' => 'center-center',
+                'icon' => 'success',
+                'title' => 'Comment Updated Successfully',
+                'showConfirmButton' => false,
+                'timer' => 2000,
+            ]);
+        }else{
         followcomments::insert($followcommentsData);
 
         $this->dispatchBrowserEvent('swal', [
@@ -249,8 +270,12 @@ class Studentmanagment extends Component
             'showConfirmButton' => false,
             'timer' => 2000,
         ]);
+    }
         $this->reset('follows');
         $this->dispatchBrowserEvent('close-model');
+    }
+    public function closefollowup(){
+        $this->item_id = '';
     }
 
     // uni listing
@@ -261,15 +286,17 @@ class Studentmanagment extends Component
         $get = registerformmodel::find($studentid);
         $this->unidata = $get;
         $universitylist_data = universitylistmodel::where('student_id', $studentid)->get();
-if($universitylist_data){
-        $uni_data_listing = [];
-        foreach ($universitylist_data as $item) {
-            $uni_data_listing[] = ['universityrecordid' => $item['id'], 'universityname' => $item['universityname'], 'applied_date' => $item['applied_date'], 'offer_status' => $item['offerstatus'], 'fee' => $item['fee'], 'cas' => $item['cas'], 'visa' => $item['visa'], 'agent' => $item['agent'], 'deposit' => $item['deposit'], 'medical' => $item['medical'], 'action' => $item['action']];
+        if ($universitylist_data->isNotEmpty()) {
+            $uni_data_listing = [];
+            foreach ($universitylist_data as $item) {
+                $uni_data_listing[] = ['universityrecordid' => $item['id'], 'universityname' => $item['universityname'], 'applied_date' => $item['applied_date'], 'offer_status' => $item['offerstatus'], 'fee' => $item['fee'], 'cas' => $item['cas'], 'visa' => $item['visa'], 'agent' => $item['agent'], 'deposit' => $item['deposit'], 'medical' => $item['medical'], 'action' => $item['action']];
+            }
+            $this->unilisting = $uni_data_listing;
+        } else {
+            $this->unilisting = [
+                [ 'universityname' => '', 'applied_date' => '', 'offer_status' => '', 'fee' => '', 'cas' => '', 'visa' => '', 'agent' => '', 'deposit' => '', 'medical' => '', 'action' => ''],
+            ];
         }
-        $this->unilisting = $uni_data_listing;
-    }else{
-        
-    }
     }
 
     public function addunilist()
@@ -279,16 +306,18 @@ if($universitylist_data){
 
     public function storeuni($studentid)
     {
+        
         $validatedData = $this->validate($this->unilistRules);
         $unilist = [];
         foreach ($this->unilisting as $item) {
             $unilist[] = ['id' => $item['universityrecordid'] ?? null, 'universityname' => $item['universityname'], 'applied_date' => $item['applied_date'], 'offerstatus' => $item['offer_status'], 'fee' => $item['fee'], 'cas' => $item['cas'], 'visa' => $item['visa'], 'agent' => $item['agent'], 'deposit' => $item['deposit'], 'medical' => $item['medical'], 'action' => $item['action']];
         }
+     
         $unilistData = [];
         foreach ($unilist as $universitydata) {
             $unilistData[] = array_merge(['student_id' => $studentid], $universitydata);
         }
-        if (isset($unilistData[0]['id'])) {
+        if (array_key_exists('id', $unilistData[0])) {
             Universitylistmodel::upsert($unilistData, ['id']);
             $this->dispatchBrowserEvent('close-unilistmodel');
 
@@ -315,15 +344,16 @@ if($universitylist_data){
         $this->reset('unilisting');
     }
 
-    public function deleteunirecord($recordid){
-      $delete = universitylistmodel::find($recordid)->delete();
-      $this->uni_list($this->studentid);
+    public function deleteunirecord($recordid)
+    {
+        $delete = universitylistmodel::find($recordid)->delete();
+        $this->uni_list($this->studentid);
     }
-    public function indexremove($indexid){
+    public function indexremove($indexid)
+    {
         unset($this->unilisting[$indexid]);
         $this->indexid = array_values($this->unilisting);
-        }
-    
+    }
 
     public function render()
     {
@@ -365,7 +395,7 @@ if($universitylist_data){
         if ($this->search == "Visa Accepted") {
             $query->where('status', 'Visa Accepted');
         }
-        $show = $query->orderBy('id', 'DESC')->paginate(10);
+        $show = $query->orderBy('id', 'DESC')->with('unilist','followuplists')->paginate(10);
         $referal = referencemodel::get();
         $session = sessionmodel::get();
         $counselor = manageusermodel::where('role', 'Counselor')->get();
@@ -378,7 +408,7 @@ if($universitylist_data){
         $uni_agents = agentmodel::orderBy('id', 'Desc')->get();
         $uni = universitymodel::orderBy('id', 'Desc')->get();
 
-        return view('livewire.registration.studentmanagment', compact('show', 'referal', 'session', 'counselor', 'followuprecord', 'coun', 'refer', 'sessions', 'studentdata','uni_agents','uni'));
+        return view('livewire.registration.studentmanagment', compact('show', 'referal', 'session', 'counselor', 'followuprecord', 'coun', 'refer', 'sessions', 'studentdata', 'uni_agents', 'uni'));
     }
 
 }

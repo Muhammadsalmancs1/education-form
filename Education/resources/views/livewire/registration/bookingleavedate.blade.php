@@ -30,7 +30,47 @@
       </div>
     </form>
         </div></div>
-<div class="card mb-4">
+
+
+<!-- Striped Rows -->
+<div class="card px-4 pb-4">
+
+  <h5 class="card-header px-0">Date Listing</h5>
+  <div class="table-responsive">
+    {{-- <input type="search" class="form-control ps-4 mb-4" wire:model="search" placeholder="Search..."> --}}
+    <table class="table  nowrap border-0 " style="width:100%">
+        <thead>
+            <tr class="dt-head">
+        <th>#</th>
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+        @foreach ($show as $key=> $item)
+        <tr>
+          <td>{{$key}}</td>
+          <td>{{$item->leave_date}}</td>
+          <td>
+            <div class="d-flex align-items-center">
+              <button class="delete-data" wire:click="confirmDelete({{$item->id}})">Delete</button>
+            </div>
+          </td>
+        </tr> 
+                 
+        @endforeach
+    </tbody>
+
+  </table>
+  <div>
+    {{$show->links()}}
+  </div>
+</div>
+</div>
+
+
+
+<div class="card my-4 ">
 <h5 class="card-header">Select Time</h5>
 <div class="card-body" >
     <form  wire:submit.prevent="bookingtime" wire:ignore.self>
@@ -57,7 +97,7 @@
               <span class="error">{{ $message }}</span> 
           @enderror
           @if ($index != 0)
-          <button class="" wire:click="removetimeindex({{$index}})"><i class="bi bi-trash-fill"></i></button>
+          <button type="button" class="" wire:click="removetimeindex({{$index}})"><i class="bi bi-trash-fill"></i></button>
           @endif
           </div>
          
@@ -82,25 +122,27 @@
  <!-- Striped Rows -->
  <div class="card px-4 pb-4">
 
-    <h5 class="card-header px-0">Date Listing</h5>
+    <h5 class="card-header px-0">Time Listing</h5>
     <div class="table-responsive">
       {{-- <input type="search" class="form-control ps-4 mb-4" wire:model="search" placeholder="Search..."> --}}
       <table class="table  nowrap border-0 " style="width:100%">
           <thead>
               <tr class="dt-head">
           <th>#</th>
-          <th>Date</th>
+          <th>Start Time</th>
+          <th>End Time</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-          @foreach ($show as $key=> $item)
+          @foreach ($listingtime as $key=> $item)
           <tr>
             <td>{{$key}}</td>
-            <td>{{$item->leave_date}}</td>
+            <td>{{$item->start_time}}</td>
+            <td>{{$item->end_time}}</td>
             <td>
               <div class="d-flex align-items-center">
-                <button class="delete-data" wire:click="confirmDelete({{$item->id}})">Delete</button>
+                <button class="delete-data" wire:click="timeDelete({{$item->id}})">Delete</button>
               </div>
             </td>
           </tr> 
@@ -110,7 +152,7 @@
 
     </table>
     <div>
-      {{$show->links()}}
+      {{$listingtime->links()}}
     </div>
   </div>
 </div>

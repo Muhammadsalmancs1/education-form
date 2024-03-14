@@ -32,6 +32,13 @@ class Users extends Component
         'role' => 'required|',
 
     ];
+
+    protected $updateroles = [
+        'name' => 'required|min:4',
+        'email' => 'required|email',
+        'role' => 'required|',
+
+    ];
     public function updated($fields)
     {
         $this->validateOnly($fields);
@@ -99,14 +106,13 @@ class Users extends Component
         $record = manageusermodel::find($item_id);
         $this->name = $record->name; 
         $this->email = $record->email; 
-        $this->password = $record->password;
         $this->role = $record->role;
         $this->item_id = $item_id; 
 
 
     }
     public function updaterecord(){
-        $validatedData =  $this->validate(); 
+        $validatedData =  $this->validate($this->updateroles); 
         $user = User::find($this->item_id);
         $user->name = $this->name;
         $user->email = $this->email;
